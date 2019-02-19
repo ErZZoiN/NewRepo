@@ -28,6 +28,10 @@ namespace Activity_Manager
 
         public Activity b;
 
+        Activity current_activity = null;
+
+        int selected_item = -1;
+
         public MainWindow()
         {
             b = new Activity
@@ -60,14 +64,49 @@ namespace Activity_Manager
             MessageBox.Show("Clément Parmentier\nTOUS DROITS RESERVES !\n Date : " + ajd.ToShortDateString());
         }
 
-        private void Main_panel_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-
-        }
-
         private void Main_panel_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (main_panel.SelectedItem!=null)
+            {
+                current_activity = (Activity)main_panel.SelectedItem;
+                modify_event_description.Text = current_activity.Description;
+                modify_event_lieu.Text = current_activity.Lieu;
+                modify_event_name.Text = current_activity.Intitule;
+                modify_event_occurence.Text = current_activity.Nboccurence.ToString();
+                modify_event_periodicite.Text = current_activity.Periodicite1.ToString();
+            }
 
+            refresh();
+        }
+
+        private void Bouton_modify_Click(object sender, RoutedEventArgs e)
+        {
+            current_activity = (Activity)main_panel.SelectedItem;
+            if (main_panel.SelectedItem!=null)
+            {
+                int index = main_panel.SelectedIndex;
+                liste_activite[index].Description = modify_event_description.Text;
+                liste_activite[index].Lieu = modify_event_lieu.Text;
+                liste_activite[index].Intitule = modify_event_name.Text;
+                liste_activite[index].Nboccurence = int.Parse(modify_event_occurence.Text);
+
+                switch (modify_event_periodicite.Text)
+                {
+                    case "Annuel":liste_activite[index].Periodicite1 = Activity.periodicite.annuel;
+                        break;
+                    case "Mensuel":
+                        liste_activite[index].Periodicite1 = Activity.periodicite.mensuel;
+                        break;
+                    case "Hebdomadaire":
+                        liste_activite[index].Periodicite1 = Activity.periodicite.hebdomadaire;
+                        break;
+                    case "Quotidien":
+                        liste_activite[index].Periodicite1 = Activity.periodicite.quotidien;
+                        break;
+                }
+
+                main_panel.Items.Refresh();
+            }
         }
     }
 }

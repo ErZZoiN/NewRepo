@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Activity_Manager"
         mc:Ignorable="d"
-        Title="Gestionnaire d'activité" Height="450" Width="800">
-
+        Title="Gestionnaire d'activité" Height="450" Width="800"
+        SizeToContent="WidthAndHeight">
     <StackPanel>
         <Menu>
             <MenuItem Header="File">
@@ -35,42 +35,49 @@
             <Button Name="bouton_create"
                     Click="Bouton_create_Click">Créer une activité</Button>
             <Button Name="bouton_delete">Supprimer une activité</Button>
-            <Button Name="bouton_modify">Modifier une activité</Button>
+            <Button Name="bouton_modify"
+                    Click="Bouton_modify_Click">Modifier une activité</Button>
         </ToolBar>
         <Grid VerticalAlignment="Center"
               HorizontalAlignment="Stretch">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="4"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
             <StackPanel Name="modify_event"
                         Orientation="Vertical"
-                        Grid.Column="1">
+                        Grid.Column="0">
                 <Label Content="Nom"/>
-                <TextBox Name="modify_event_name"
-                         IsReadOnly="True"/>
+                <TextBox Name="modify_event_name"/>
                 <Separator/>
                 <Label Content="Lieu"/>
-                <TextBox Name="modify_event_lieu"
-                         IsReadOnly="True"/>
+                <TextBox Name="modify_event_lieu"/>
                 <Separator/>
                 <Label Content="Description"/>
-                <TextBox Name="modify_event_description"
-                         IsReadOnly="True"/>
+                <TextBox Name="modify_event_description"/>
                 <Separator/>
                 <StackPanel Orientation="Horizontal">
                     <Label Content="Nombre d'occurrence"/>
                     <TextBox Name="modify_event_occurence"
-                             IsReadOnly="True"/>
+                             Width="50"/>
                 </StackPanel>
                 <Label Content="Periodicite"/>
-                <ComboBox Name="modify_event_periodicite"
-                          IsReadOnly="True">
-                    <ComboBoxItem Content="Annuel"/>
+                <ComboBox Name="modify_event_periodicite">
+                    <ComboBoxItem Content="{Binding Path=Periodicite}"/>
+                    <ComboBoxItem Content="Mensuel"/>
+                    <ComboBoxItem Content="Hebdomadaire"/>
+                    <ComboBoxItem Content="Quotidien"/>
                 </ComboBox>
             </StackPanel>
-            <GridSplitter/>
+            <GridSplitter Grid.Column="1"
+                          Width="4"
+                          HorizontalAlignment="Stretch"/>
             <DataGrid Name="main_panel"
+                      Grid.Column="2"
                       ItemsSource="{Binding}"
                       IsReadOnly="True"
-                      
-                      Grid.Column="0" SelectionChanged="Main_panel_SelectionChanged">
+                      SelectionChanged="Main_panel_SelectionChanged">
             </DataGrid>
         </Grid>
     </StackPanel>
