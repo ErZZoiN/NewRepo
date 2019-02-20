@@ -47,7 +47,8 @@
             </Grid.ColumnDefinitions>
             <StackPanel Name="modify_event"
                         Orientation="Vertical"
-                        Grid.Column="0">
+                        Grid.Column="0"
+                        Background="AliceBlue">
                 <Label Content="Nom"/>
                 <TextBox Name="modify_event_name"/>
                 <Separator/>
@@ -64,7 +65,7 @@
                 </StackPanel>
                 <Label Content="Periodicite"/>
                 <ComboBox Name="modify_event_periodicite">
-                    <ComboBoxItem Content="{Binding Path=Periodicite}"/>
+                    <ComboBoxItem Content="Annuel"/>
                     <ComboBoxItem Content="Mensuel"/>
                     <ComboBoxItem Content="Hebdomadaire"/>
                     <ComboBoxItem Content="Quotidien"/>
