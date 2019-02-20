@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Activity_Manager"
         mc:Ignorable="d"
-        Title="Gestionnaire d'activité" Height="450" Width="800"
+        Title="Gestionnaire d'activité" Height="650" Width="800"
         SizeToContent="WidthAndHeight">
     <StackPanel>
         <Menu>
@@ -34,7 +34,8 @@
         <ToolBar Band="1">
             <Button Name="bouton_create"
                     Click="Bouton_create_Click">Créer une activité</Button>
-            <Button Name="bouton_delete">Supprimer une activité</Button>
+            <Button Name="bouton_delete"
+                    Click="Bouton_delete_Click">Supprimer une activité</Button>
             <Button Name="bouton_modify"
                     Click="Bouton_modify_Click">Modifier une activité</Button>
         </ToolBar>
@@ -70,6 +71,19 @@
                     <ComboBoxItem Content="Hebdomadaire"/>
                     <ComboBoxItem Content="Quotidien"/>
                 </ComboBox>
+                <StackPanel Orientation="Horizontal">
+                    <StackPanel>
+                        <Label Content="Date de début"/>
+                        <Calendar
+                            Name="modify_event_debut"></Calendar>
+                    </StackPanel>
+                    <Separator Width="5"/>
+                    <StackPanel>
+                        <Label Content="Date de fin"/>
+                        <Calendar
+                            Name="modify_event_fin"></Calendar>
+                    </StackPanel>
+                </StackPanel>
             </StackPanel>
             <GridSplitter Grid.Column="1"
                           Width="4"

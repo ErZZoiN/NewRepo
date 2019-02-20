@@ -30,19 +30,17 @@ namespace Activity_Manager
 
         Activity current_activity = null;
 
-        int selected_item = -1;
-
         public MainWindow()
         {
             b = new Activity
             {
-                Intitule = "yoyo",
-                Lieu = "Ailleurs",
-                Description="La plus grosse teuf de Yoyo de ta life.",
+                Intitule = "La vie de Clément",
+                Lieu = "The world",
+                Description = "La plus grosse teuf de Yoyo de ta life. lol.",
                 Nboccurence = 3,
                 Periodicite1 = Activity.periodicite.mensuel,
-                Debut = DateTime.Now,
-                Fin = DateTime.Now
+                Debut = new DateTime(1995, 8, 3),
+                Fin = DateTime.Now,
             };
 
             InitializeComponent();
@@ -52,10 +50,7 @@ namespace Activity_Manager
             main_panel.DataContext=liste_activite;
         }
 
-        private void Bouton_create_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
+        #region LISTENER
 
         private void Menu_about_Click(object sender, RoutedEventArgs e)
         {
@@ -74,8 +69,33 @@ namespace Activity_Manager
                 modify_event_name.Text = current_activity.Intitule;
                 modify_event_occurence.Text = current_activity.Nboccurence.ToString();
                 modify_event_periodicite.Text = current_activity.Periodicite1.ToString();
+
+                modify_event_periodicite.Text = Activity.PeriodiciteToString(current_activity.Periodicite1);
+
+                modify_event_debut.SelectedDate = current_activity.Debut;
+                modify_event_fin.SelectedDate = current_activity.Fin;
+
+                modify_event_debut.DisplayDate = current_activity.Debut;
+                modify_event_fin.DisplayDate = current_activity.Fin;
             }
         }
+
+        #region TOOLBAR
+
+        private void Bouton_create_Click(object sender, RoutedEventArgs e)
+        {
+            liste_activite.Add(new Activity
+            {
+                Intitule = modify_event_name.Text,
+                Lieu = modify_event_lieu.Text,
+                Description = modify_event_description.Text,
+                Nboccurence = int.Parse(modify_event_occurence.Text),
+                Periodicite1 = Activity.StringToPeriodicite(modify_event_periodicite.Text),
+                Debut = (DateTime)modify_event_debut.SelectedDate,
+                Fin = (DateTime)modify_event_fin.SelectedDate,
+            });
+        }
+
 
         private void Bouton_modify_Click(object sender, RoutedEventArgs e)
         {
@@ -88,23 +108,24 @@ namespace Activity_Manager
                 liste_activite[index].Intitule = modify_event_name.Text;
                 liste_activite[index].Nboccurence = int.Parse(modify_event_occurence.Text);
 
-                switch (modify_event_periodicite.Text)
-                {
-                    case "Annuel":liste_activite[index].Periodicite1 = Activity.periodicite.annuel;
-                        break;
-                    case "Mensuel":
-                        liste_activite[index].Periodicite1 = Activity.periodicite.mensuel;
-                        break;
-                    case "Hebdomadaire":
-                        liste_activite[index].Periodicite1 = Activity.periodicite.hebdomadaire;
-                        break;
-                    case "Quotidien":
-                        liste_activite[index].Periodicite1 = Activity.periodicite.quotidien;
-                        break;
-                }
+                liste_activite[index].Periodicite1 = Activity.StringToPeriodicite(modify_event_periodicite.Text);
+
+                liste_activite[index].Debut = (DateTime)modify_event_debut.SelectedDate;
+                liste_activite[index].Fin = (DateTime)modify_event_fin.SelectedDate;
 
                 main_panel.Items.Refresh();
             }
         }
+
+        private void Bouton_delete_Click(object sender, RoutedEventArgs e)
+        {
+            if(main_panel.SelectedIndex>=0)
+                liste_activite.RemoveAt(main_panel.SelectedIndex);
+        }
+
+
+        #endregion
+
+        #endregion
     }
 }

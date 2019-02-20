@@ -40,6 +40,42 @@ namespace LibrairieActivity
 
 
         #endregion
+
+        public static String PeriodiciteToString(periodicite p)
+        {
+            switch(p)
+            {
+                case periodicite.annuel:
+                    return "Annuel";
+                case periodicite.hebdomadaire:
+                    return "Hebdomadaire";
+                case periodicite.mensuel:
+                    return "Mensuel";
+                case periodicite.quotidien:
+                    return "Quotidien";
+
+                default:
+                    return "";
+            }
+        }
+
+        public static periodicite StringToPeriodicite(String s)
+        {
+            switch(s)
+            {
+                case "Annuel":
+                    return periodicite.annuel;
+                case "Hebdomadaire":
+                    return periodicite.hebdomadaire;
+                case "Mensuel":
+                    return periodicite.mensuel;
+                case "Quotidien":
+                    return periodicite.quotidien;
+
+                default:
+                    return periodicite.quotidien;
+            }
+        }
     }
 
 }
