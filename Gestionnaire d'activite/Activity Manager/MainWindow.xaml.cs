@@ -75,8 +75,6 @@ namespace Activity_Manager
                 modify_event_occurence.Text = current_activity.Nboccurence.ToString();
                 modify_event_periodicite.Text = current_activity.Periodicite1.ToString();
             }
-
-            refresh();
         }
 
         private void Bouton_modify_Click(object sender, RoutedEventArgs e)
