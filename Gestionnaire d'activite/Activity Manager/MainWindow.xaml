@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Activity_Manager"
+        xmlns:forms="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
         mc:Ignorable="d"
         Title="Gestionnaire d'activité" Height="650" Width="800"
         SizeToContent="WidthAndHeight">
@@ -74,14 +75,14 @@
                 <StackPanel Orientation="Horizontal">
                     <StackPanel>
                         <Label Content="Date de début"/>
-                        <Calendar
-                            Name="modify_event_debut"></Calendar>
+                        <DatePicker Name="modify_event_debut"
+                                    SelectedDateFormat="Long"/>
                     </StackPanel>
                     <Separator Width="5"/>
                     <StackPanel>
                         <Label Content="Date de fin"/>
-                        <Calendar
-                            Name="modify_event_fin"></Calendar>
+                        <DatePicker Name="modify_event_fin"
+                                    SelectedDateFormat="Long"/>
                     </StackPanel>
                 </StackPanel>
             </StackPanel>
@@ -93,6 +94,9 @@
                       ItemsSource="{Binding}"
                       IsReadOnly="True"
                       SelectionChanged="Main_panel_SelectionChanged">
+                <DataGrid.Resources>
+                    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#FF0000"/>
+                </DataGrid.Resources>
             </DataGrid>
         </Grid>
     </StackPanel>
