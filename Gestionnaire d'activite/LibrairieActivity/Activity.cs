@@ -37,8 +37,6 @@ namespace LibrairieActivity
         public int Nboccurence { get => _nboccurence; set => _nboccurence = value; }
         public periodicite Periodicite1 { get => _periodicite; set => _periodicite = value; }
 
-
-
         #endregion
 
         public static String PeriodiciteToString(periodicite p)

@@ -49,6 +49,18 @@ namespace Activity_Manager
             liste_activite.Add(b);
             main_panel.DataContext=liste_activite;
             name_list.DataContext=liste_activite;
+
+            for(int i=0;i<24;i++)
+            {
+                modify_event_debut_heure.Items.Add(i);
+                modify_event_fin_heure.Items.Add(i);
+            }
+
+            for (int i = 0; i < 60; i++)
+            {
+                modify_event_debut_minute.Items.Add(i);
+                modify_event_fin_minute.Items.Add(i);
+            }
         }
 
         #region LISTENER
@@ -88,6 +100,14 @@ namespace Activity_Manager
 
         private void Bouton_create_Click(object sender, RoutedEventArgs e)
         {
+            pDateTime tmp_debut = (DateTime)modify_event_debut.SelectedDate;
+            TimeSpan s = new TimeSpan(int.Parse(modify_event_debut_heure.SelectedItem.ToString()), int.Parse(modify_event_debut_minute.SelectedItem.ToString()), 0);
+            tmp_debut = tmp_debut.Date + s;
+
+            DateTime tmp_fin = (DateTime)modify_event_fin.SelectedDate;
+            TimeSpan s2 = new TimeSpan(int.Parse(modify_event_fin_heure.SelectedItem.ToString()), int.Parse(modify_event_fin_minute.SelectedItem.ToString()), 0);
+            tmp_fin = tmp_fin.Date + s2;
+
             liste_activite.Add(new Activity
             {
                 Intitule = modify_event_name.Text,
@@ -95,8 +115,8 @@ namespace Activity_Manager
                 Description = modify_event_description.Text,
                 Nboccurence = int.Parse(modify_event_occurence.Text),
                 Periodicite1 = Activity.StringToPeriodicite(modify_event_periodicite.Text),
-                Debut = (DateTime)modify_event_debut.SelectedDate,
-                Fin = (DateTime)modify_event_fin.SelectedDate,
+                Debut = tmp_debut,
+                Fin = tmp_fin,
             });
         }
 
@@ -120,25 +140,14 @@ namespace Activity_Manager
 
                 modify_event_debut.DisplayDate = current_activity.Debut;
                 modify_event_fin.DisplayDate = current_activity.Fin;
+
+                modify_event_debut_heure.SelectedIndex = current_activity.Debut.Hour;
+                modify_event_fin_heure.SelectedIndex = current_activity.Fin.Hour;
+                modify_event_debut_minute.SelectedIndex = current_activity.Debut.Minute;
+                modify_event_fin_minute.SelectedIndex = current_activity.Fin.Minute;
             }
             else
                 modify_event.Visibility = Visibility.Collapsed;
-            //current_activity = (Activity)main_panel.SelectedItem;
-            //if (main_panel.SelectedItem!=null)
-            //{
-            //    int index = main_panel.SelectedIndex;
-            //    liste_activite[index].Description = modify_event_description.Text;
-            //    liste_activite[index].Lieu = modify_event_lieu.Text;
-            //    liste_activite[index].Intitule = modify_event_name.Text;
-            //    liste_activite[index].Nboccurence = int.Parse(modify_event_occurence.Text);
-
-            //    liste_activite[index].Periodicite1 = Activity.StringToPeriodicite(modify_event_periodicite.Text);
-
-            //    liste_activite[index].Debut = (DateTime)modify_event_debut.SelectedDate;
-            //    liste_activite[index].Fin = (DateTime)modify_event_fin.SelectedDate;
-
-            //    main_panel.Items.Refresh();
-            //}
         }
 
         private void Bouton_delete_Click(object sender, RoutedEventArgs e)
@@ -166,6 +175,14 @@ namespace Activity_Manager
 
         private void Modify_event_valider_Click(object sender, RoutedEventArgs e)
         {
+            DateTime tmp_debut = (DateTime)modify_event_debut.SelectedDate;
+            TimeSpan s = new TimeSpan(int.Parse(modify_event_debut_heure.SelectedItem.ToString()), int.Parse(modify_event_debut_minute.SelectedItem.ToString()), 0);
+            tmp_debut = tmp_debut.Date + s;
+
+            DateTime tmp_fin = (DateTime)modify_event_fin.SelectedDate;
+            TimeSpan s2 = new TimeSpan(int.Parse(modify_event_fin_heure.SelectedItem.ToString()), int.Parse(modify_event_fin_minute.SelectedItem.ToString()), 0);
+            tmp_fin = tmp_fin.Date + s2;
+
             current_activity = (Activity)main_panel.SelectedItem;
             if (main_panel.SelectedItem != null)
             {
@@ -177,8 +194,8 @@ namespace Activity_Manager
 
                 liste_activite[index].Periodicite1 = Activity.StringToPeriodicite(modify_event_periodicite.Text);
 
-                liste_activite[index].Debut = (DateTime)modify_event_debut.SelectedDate;
-                liste_activite[index].Fin = (DateTime)modify_event_fin.SelectedDate;
+                liste_activite[index].Debut = tmp_debut;
+                liste_activite[index].Fin = tmp_fin;
 
                 main_panel.Items.Refresh();
             }
@@ -196,6 +213,14 @@ namespace Activity_Manager
 
         private void Modify_event_apply_Click(object sender, RoutedEventArgs e)
         {
+            DateTime tmp_debut = (DateTime)modify_event_debut.SelectedDate;
+            TimeSpan s = new TimeSpan(int.Parse(modify_event_debut_heure.SelectedItem.ToString()), int.Parse(modify_event_debut_minute.SelectedItem.ToString()), 0);
+            tmp_debut = tmp_debut.Date + s;
+
+            DateTime tmp_fin = (DateTime)modify_event_fin.SelectedDate;
+            TimeSpan s2 = new TimeSpan(int.Parse(modify_event_fin_heure.SelectedItem.ToString()), int.Parse(modify_event_fin_minute.SelectedItem.ToString()), 0);
+            tmp_fin = tmp_fin.Date + s2;
+
             current_activity = (Activity)main_panel.SelectedItem;
             if (main_panel.SelectedItem != null)
             {
@@ -207,8 +232,8 @@ namespace Activity_Manager
 
                 liste_activite[index].Periodicite1 = Activity.StringToPeriodicite(modify_event_periodicite.Text);
 
-                liste_activite[index].Debut = (DateTime)modify_event_debut.SelectedDate;
-                liste_activite[index].Fin = (DateTime)modify_event_fin.SelectedDate;
+                liste_activite[index].Debut = tmp_debut;
+                liste_activite[index].Fin = tmp_fin;
 
                 main_panel.Items.Refresh();
             }

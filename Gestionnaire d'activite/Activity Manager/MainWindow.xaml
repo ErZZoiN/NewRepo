@@ -80,12 +80,24 @@
                         <Label Content="Date de début"/>
                         <DatePicker Name="modify_event_debut"
                                     SelectedDateFormat="Long"/>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Heure :"/>
+                            <ComboBox Name="modify_event_debut_heure"/>
+                            <Label Content="Minute :"/>
+                            <ComboBox Name="modify_event_debut_minute"/>
+                        </StackPanel>
                     </StackPanel>
                     <Separator Width="5"/>
                     <StackPanel>
                         <Label Content="Date de fin"/>
                         <DatePicker Name="modify_event_fin"
                                     SelectedDateFormat="Long"/>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Heure :"/>
+                            <ComboBox Name="modify_event_fin_heure"/>
+                            <Label Content="Minute :"/>
+                            <ComboBox Name="modify_event_fin_minute"/>
+                        </StackPanel>
                     </StackPanel>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
@@ -100,8 +112,8 @@
                             Click="Modify_event_apply_Click"/>
                 </StackPanel>
             </StackPanel>
-            <GridSplitter Grid.Column="1"
-                          Width="4"
+            <GridSplitter Width="4"
+                          Grid.Column="1"
                           HorizontalAlignment="Stretch"/>
             <DataGrid Name="main_panel"
                       Grid.Column="2"
@@ -112,8 +124,8 @@
                     <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#FF0000"/>
                 </DataGrid.Resources>
             </DataGrid>
-            <GridSplitter Grid.Column="3"
-                          Width="4"
+            <GridSplitter Width="4"
+                          Grid.Column="3"
                           HorizontalAlignment="Stretch"/>
             <ListBox Name="name_list"
                      ItemsSource="{Binding}"
