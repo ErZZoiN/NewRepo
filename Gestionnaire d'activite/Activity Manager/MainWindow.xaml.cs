@@ -48,6 +48,7 @@ namespace Activity_Manager
             liste_activite = new ObservableCollection<Activity>();
             liste_activite.Add(b);
             main_panel.DataContext=liste_activite;
+            name_list.DataContext=liste_activite;
         }
 
         #region LISTENER
@@ -61,8 +62,9 @@ namespace Activity_Manager
 
         private void Main_panel_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (main_panel.SelectedItem!=null)
+         /*   if (main_panel.SelectedItem!=null)
             {
+                modify_event.Visibility = Visibility.Visible;
                 current_activity = (Activity)main_panel.SelectedItem;
                 modify_event_description.Text = current_activity.Description;
                 modify_event_lieu.Text = current_activity.Lieu;
@@ -78,6 +80,8 @@ namespace Activity_Manager
                 modify_event_debut.DisplayDate = current_activity.Debut;
                 modify_event_fin.DisplayDate = current_activity.Fin;
             }
+            else
+                modify_event.Visibility = Visibility.Collapsed;*/
         }
 
         #region TOOLBAR
@@ -99,8 +103,101 @@ namespace Activity_Manager
 
         private void Bouton_modify_Click(object sender, RoutedEventArgs e)
         {
+            if (main_panel.SelectedItem != null)
+            {
+                modify_event.Visibility = Visibility.Visible;
+                current_activity = (Activity)main_panel.SelectedItem;
+                modify_event_description.Text = current_activity.Description;
+                modify_event_lieu.Text = current_activity.Lieu;
+                modify_event_name.Text = current_activity.Intitule;
+                modify_event_occurence.Text = current_activity.Nboccurence.ToString();
+                modify_event_periodicite.Text = current_activity.Periodicite1.ToString();
+
+                modify_event_periodicite.Text = Activity.PeriodiciteToString(current_activity.Periodicite1);
+
+                modify_event_debut.SelectedDate = current_activity.Debut;
+                modify_event_fin.SelectedDate = current_activity.Fin;
+
+                modify_event_debut.DisplayDate = current_activity.Debut;
+                modify_event_fin.DisplayDate = current_activity.Fin;
+            }
+            else
+                modify_event.Visibility = Visibility.Collapsed;
+            //current_activity = (Activity)main_panel.SelectedItem;
+            //if (main_panel.SelectedItem!=null)
+            //{
+            //    int index = main_panel.SelectedIndex;
+            //    liste_activite[index].Description = modify_event_description.Text;
+            //    liste_activite[index].Lieu = modify_event_lieu.Text;
+            //    liste_activite[index].Intitule = modify_event_name.Text;
+            //    liste_activite[index].Nboccurence = int.Parse(modify_event_occurence.Text);
+
+            //    liste_activite[index].Periodicite1 = Activity.StringToPeriodicite(modify_event_periodicite.Text);
+
+            //    liste_activite[index].Debut = (DateTime)modify_event_debut.SelectedDate;
+            //    liste_activite[index].Fin = (DateTime)modify_event_fin.SelectedDate;
+
+            //    main_panel.Items.Refresh();
+            //}
+        }
+
+        private void Bouton_delete_Click(object sender, RoutedEventArgs e)
+        {
+            if(main_panel.SelectedIndex>=0)
+                liste_activite.RemoveAt(main_panel.SelectedIndex);
+        }
+
+
+        #endregion
+
+        #endregion
+
+        private void Modify_event_cancel_Click(object sender, RoutedEventArgs e)
+        {
+            modify_event.Visibility = Visibility.Collapsed;
+            modify_event_description.Text = "";
+            modify_event_lieu.Text = "";
+            modify_event_name.Text = "";
+            modify_event_occurence.Text = "";
+            modify_event_periodicite.SelectedIndex = 0;
+            modify_event_debut.SelectedDate = DateTime.Now;
+            modify_event_fin.SelectedDate = DateTime.Now;
+        }
+
+        private void Modify_event_valider_Click(object sender, RoutedEventArgs e)
+        {
             current_activity = (Activity)main_panel.SelectedItem;
-            if (main_panel.SelectedItem!=null)
+            if (main_panel.SelectedItem != null)
+            {
+                int index = main_panel.SelectedIndex;
+                liste_activite[index].Description = modify_event_description.Text;
+                liste_activite[index].Lieu = modify_event_lieu.Text;
+                liste_activite[index].Intitule = modify_event_name.Text;
+                liste_activite[index].Nboccurence = int.Parse(modify_event_occurence.Text);
+
+                liste_activite[index].Periodicite1 = Activity.StringToPeriodicite(modify_event_periodicite.Text);
+
+                liste_activite[index].Debut = (DateTime)modify_event_debut.SelectedDate;
+                liste_activite[index].Fin = (DateTime)modify_event_fin.SelectedDate;
+
+                main_panel.Items.Refresh();
+            }
+
+            modify_event_description.Text = "";
+            modify_event_lieu.Text = "";
+            modify_event_name.Text = "";
+            modify_event_occurence.Text = "";
+            modify_event_periodicite.SelectedIndex = 0;
+            modify_event_debut.SelectedDate = DateTime.Now;
+            modify_event_fin.SelectedDate = DateTime.Now;
+
+            modify_event.Visibility = Visibility.Collapsed;
+        }
+
+        private void Modify_event_apply_Click(object sender, RoutedEventArgs e)
+        {
+            current_activity = (Activity)main_panel.SelectedItem;
+            if (main_panel.SelectedItem != null)
             {
                 int index = main_panel.SelectedIndex;
                 liste_activite[index].Description = modify_event_description.Text;
@@ -116,16 +213,5 @@ namespace Activity_Manager
                 main_panel.Items.Refresh();
             }
         }
-
-        private void Bouton_delete_Click(object sender, RoutedEventArgs e)
-        {
-            if(main_panel.SelectedIndex>=0)
-                liste_activite.RemoveAt(main_panel.SelectedIndex);
-        }
-
-
-        #endregion
-
-        #endregion
     }
 }

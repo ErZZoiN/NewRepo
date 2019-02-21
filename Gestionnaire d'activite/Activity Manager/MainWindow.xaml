@@ -46,11 +46,14 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="4"/>
                 <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="4"/>
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <StackPanel Name="modify_event"
                         Orientation="Vertical"
                         Grid.Column="0"
-                        Background="AliceBlue">
+                        Background="AliceBlue"
+                        Visibility="Collapsed">
                 <Label Content="Nom"/>
                 <TextBox Name="modify_event_name"/>
                 <Separator/>
@@ -85,6 +88,17 @@
                                     SelectedDateFormat="Long"/>
                     </StackPanel>
                 </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Button Name="modify_event_cancel"
+                            Content="Annuler"
+                            Click="Modify_event_cancel_Click"/>
+                    <Button Name="modify_event_valider"
+                            Content="Valider"
+                            Click="Modify_event_valider_Click"/>
+                    <Button Name="modify_event_apply"
+                            Content="Appliquer"
+                            Click="Modify_event_apply_Click"/>
+                </StackPanel>
             </StackPanel>
             <GridSplitter Grid.Column="1"
                           Width="4"
@@ -98,6 +112,12 @@
                     <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#FF0000"/>
                 </DataGrid.Resources>
             </DataGrid>
+            <GridSplitter Grid.Column="3"
+                          Width="4"
+                          HorizontalAlignment="Stretch"/>
+            <ListBox Name="name_list"
+                     ItemsSource="{Binding}"
+                     Grid.Column="4"/>
         </Grid>
     </StackPanel>
 </Window>
