@@ -27,14 +27,17 @@ namespace Activity_Manager
     /// </summary>
     public partial class MainWindow : Window
     {
+        // Pour sauvegarder le dossier de sauvegarde d'une session à l'autre,
+        // on enregistre dans un fichier le chemin du dossier de sauvegarde.
+        // Celui-ci sera chargé au démarrage du programme, et enregistré à sa fermeture.
         static string saving = Directory.GetCurrentDirectory() + "pref.dat";
 
         #region VARIABLE
-        private ObservableCollection<Activity> liste_activite = null;
+        private ObservableCollection<Activity> _liste_activite = null;
         private Activity b;
-        private Activity current_activity = null;
-        private bool modify_flag = false;
-        private string save_location = "";
+        private Activity _current_activity = null;
+        private bool _modify_flag = false;
+        private string _save_location = "";
 
         #endregion
 
@@ -42,8 +45,8 @@ namespace Activity_Manager
 
         public String SaveLocation
         {
-            get { return save_location; }
-            set { save_location = value; }
+            get { return _save_location; }
+            set { _save_location = value; }
         }
 
         #endregion
@@ -74,10 +77,10 @@ namespace Activity_Manager
                 SaveLocation = Directory.GetCurrentDirectory();
             }
 
-            liste_activite = new ObservableCollection<Activity>();
-            liste_activite.Add(b);
-            main_panel.DataContext=liste_activite;
-            name_list.DataContext=liste_activite;
+            _liste_activite = new ObservableCollection<Activity>();
+            _liste_activite.Add(b);
+            main_panel.DataContext=_liste_activite;
+            name_list.DataContext=_liste_activite;
 
             searchbar.Foreground = Brushes.Gray;
             searchbar.Text = "Recherche par lieu";
@@ -145,7 +148,7 @@ namespace Activity_Manager
 
         private void Bouton_create_Click(object sender, RoutedEventArgs e)
         {
-            modify_flag = false;
+            _modify_flag = false;
             modify_event_title.Content = "Création d'un événement";
             modify_event.Visibility = Visibility.Visible;
         }
@@ -155,23 +158,23 @@ namespace Activity_Manager
         {
             if (main_panel.SelectedItem != null)
             {
-                modify_flag = true;
+                _modify_flag = true;
                 modify_event_title.Content = "Modification d'un événement";
                 modify_event.Visibility = Visibility.Visible;
-                current_activity = (Activity)main_panel.SelectedItem;
-                modify_event_description.Text = current_activity.Description;
-                modify_event_lieu.Text = current_activity.Lieu;
-                modify_event_name.Text = current_activity.Intitule;
-                modify_event_occurence.Value = current_activity.Nboccurence;
-                modify_event_periodicite.Text = current_activity.Periodicite1.ToString();
+                _current_activity = (Activity)main_panel.SelectedItem;
+                modify_event_description.Text = _current_activity.Description;
+                modify_event_lieu.Text = _current_activity.Lieu;
+                modify_event_name.Text = _current_activity.Intitule;
+                modify_event_occurence.Value = _current_activity.Nboccurence;
+                modify_event_periodicite.Text = _current_activity.Periodicite1.ToString();
 
-                modify_event_periodicite.Text = Activity.PeriodiciteToString(current_activity.Periodicite1);
+                modify_event_periodicite.Text = Activity.PeriodiciteToString(_current_activity.Periodicite1);
 
-                modify_event_debut.Value = current_activity.Debut;
-                modify_event_fin.Value = current_activity.Fin;
+                modify_event_debut.Value = _current_activity.Debut;
+                modify_event_fin.Value = _current_activity.Fin;
 
-                modify_event_debut.Value = current_activity.Debut;
-                modify_event_fin.Value = current_activity.Fin;
+                modify_event_debut.Value = _current_activity.Debut;
+                modify_event_fin.Value = _current_activity.Fin;
             }
             else
                 modify_event.Visibility = Visibility.Collapsed;
@@ -180,7 +183,7 @@ namespace Activity_Manager
         private void Bouton_delete_Click(object sender, RoutedEventArgs e)
         {
             if(main_panel.SelectedIndex>=0)
-                liste_activite.RemoveAt(main_panel.SelectedIndex);
+                _liste_activite.RemoveAt(main_panel.SelectedIndex);
         }
 
 
@@ -203,25 +206,25 @@ namespace Activity_Manager
         private void Modify_event_valider_Click(object sender, RoutedEventArgs e)
         {
 
-            current_activity = (Activity)main_panel.SelectedItem;
-            if ((main_panel.SelectedItem != null) && modify_flag)
+            _current_activity = (Activity)main_panel.SelectedItem;
+            if ((main_panel.SelectedItem != null) && _modify_flag)
             {
                 int index = main_panel.SelectedIndex;
-                liste_activite[index].Description = modify_event_description.Text;
-                liste_activite[index].Lieu = modify_event_lieu.Text;
-                liste_activite[index].Intitule = modify_event_name.Text;
-                liste_activite[index].Nboccurence = (int)modify_event_occurence.Value;
+                _liste_activite[index].Description = modify_event_description.Text;
+                _liste_activite[index].Lieu = modify_event_lieu.Text;
+                _liste_activite[index].Intitule = modify_event_name.Text;
+                _liste_activite[index].Nboccurence = (int)modify_event_occurence.Value;
 
-                liste_activite[index].Periodicite1 = Activity.StringToPeriodicite(modify_event_periodicite.Text);
+                _liste_activite[index].Periodicite1 = Activity.StringToPeriodicite(modify_event_periodicite.Text);
 
-                liste_activite[index].Debut = (DateTime)modify_event_debut.Value;
-                liste_activite[index].Fin = (DateTime)modify_event_fin.Value;
+                _liste_activite[index].Debut = (DateTime)modify_event_debut.Value;
+                _liste_activite[index].Fin = (DateTime)modify_event_fin.Value;
 
                 main_panel.Items.Refresh();
             }
-            else if(!modify_flag)
+            else if(!_modify_flag)
             {
-                liste_activite.Add(new Activity
+                _liste_activite.Add(new Activity
                 {
                     Intitule = modify_event_name.Text,
                     Lieu = modify_event_lieu.Text,
@@ -247,25 +250,25 @@ namespace Activity_Manager
         private void Modify_event_apply_Click(object sender, RoutedEventArgs e)
         {
 
-            current_activity = (Activity)main_panel.SelectedItem;
-            if ((main_panel.SelectedItem != null) && modify_flag)
+            _current_activity = (Activity)main_panel.SelectedItem;
+            if ((main_panel.SelectedItem != null) && _modify_flag)
             {
                 int index = main_panel.SelectedIndex;
-                liste_activite[index].Description = modify_event_description.Text;
-                liste_activite[index].Lieu = modify_event_lieu.Text;
-                liste_activite[index].Intitule = modify_event_name.Text;
-                liste_activite[index].Nboccurence = (int)modify_event_occurence.Value;
+                _liste_activite[index].Description = modify_event_description.Text;
+                _liste_activite[index].Lieu = modify_event_lieu.Text;
+                _liste_activite[index].Intitule = modify_event_name.Text;
+                _liste_activite[index].Nboccurence = (int)modify_event_occurence.Value;
 
-                liste_activite[index].Periodicite1 = Activity.StringToPeriodicite(modify_event_periodicite.Text);
+                _liste_activite[index].Periodicite1 = Activity.StringToPeriodicite(modify_event_periodicite.Text);
 
-                liste_activite[index].Debut = (DateTime)modify_event_debut.Value;
-                liste_activite[index].Fin = (DateTime)modify_event_fin.Value;
+                _liste_activite[index].Debut = (DateTime)modify_event_debut.Value;
+                _liste_activite[index].Fin = (DateTime)modify_event_fin.Value;
 
                 main_panel.Items.Refresh();
             }
-            else if (!modify_flag)
+            else if (!_modify_flag)
             {
-                liste_activite.Add(new Activity
+                _liste_activite.Add(new Activity
                 {
                     Intitule = modify_event_name.Text,
                     Lieu = modify_event_lieu.Text,
@@ -310,8 +313,6 @@ namespace Activity_Manager
         }
         #endregion
 
-        #endregion
-
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             byte[] bytes = Encoding.ASCII.GetBytes(SaveLocation);
@@ -320,5 +321,7 @@ namespace Activity_Manager
             fd.Write(bytes, 0, SaveLocation.Length);
             fd.Close();
         }
+
+        #endregion
     }
 }

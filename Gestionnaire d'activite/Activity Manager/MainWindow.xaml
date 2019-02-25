@@ -136,7 +136,7 @@
                           Grid.Column="3"
                           HorizontalAlignment="Stretch"/>
             <ListBox Name="name_list"
-                     ItemsSource="{Binding}"
+                     ItemsSource="{Binding Path=Intitule}"
                      Grid.Column="4"/>
         </Grid>
     </StackPanel>

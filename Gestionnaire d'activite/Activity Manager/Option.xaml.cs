@@ -21,14 +21,16 @@ namespace Activity_Manager
     /// </summary>
     public partial class Option : Window
     {
-        private MainWindow fenetre_principale;
+        private MainWindow _fenetre_principale;
 
         public Option(MainWindow mainWindow)
         {
-            fenetre_principale = mainWindow;
+            _fenetre_principale = mainWindow;
             InitializeComponent();
             option_dossier.Text = mainWindow.SaveLocation;
         }
+
+        #region LISTENER
 
         private void Option_dossier_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
@@ -40,21 +42,6 @@ namespace Activity_Manager
 
         private void Valider_Click(object sender, RoutedEventArgs e)
         {
-            //try
-            //{
-            //    Brush brush_background = new SolidColorBrush(background_color.SelectedColor.Value);
-            //    fenetre_principale.name_list.Background = brush_background;
-            //}
-            //catch (InvalidOperationException) { }
-
-            //try
-            //{
-            //    Brush brush_foreground = new SolidColorBrush(foreground_color.SelectedColor.Value);
-            //    fenetre_principale.name_list.Foreground = brush_foreground;
-            //}
-            //catch (InvalidOperationException) { }
-
-            //fenetre_principale.SaveLocation = option_dossier.Text;
             Appliquer_Click(sender, e);
 
             this.Close();
@@ -71,18 +58,19 @@ namespace Activity_Manager
             try
             {
                 Brush brush_background = new SolidColorBrush(background_color.SelectedColor.Value);
-                fenetre_principale.name_list.Background = brush_background;
+                _fenetre_principale.name_list.Background = brush_background;
             }
             catch (InvalidOperationException) { }
 
             try
             {
                 Brush brush_foreground = new SolidColorBrush(foreground_color.SelectedColor.Value);
-                fenetre_principale.name_list.Foreground = brush_foreground;
+                _fenetre_principale.name_list.Foreground = brush_foreground;
             }
             catch (InvalidOperationException) { }
 
-            fenetre_principale.SaveLocation = option_dossier.Text;
+            _fenetre_principale.SaveLocation = option_dossier.Text;
         }
+        #endregion
     }
 }
