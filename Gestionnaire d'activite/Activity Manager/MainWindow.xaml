@@ -26,7 +26,8 @@
             </MenuItem>
             <MenuItem Header="Tools">
                 <MenuItem Header="Option"
-                          Name="menu_option"/>
+                          Name="menu_option"
+                          Click="Menu_option_Click"/>
                 <MenuItem Header="About Box"
                           Name="menu_about"
                           Click="Menu_about_Click"/>
@@ -54,6 +55,9 @@
                         Grid.Column="0"
                         Background="AliceBlue"
                         Visibility="Collapsed">
+                <Label Name="modify_event_title"
+                       Content="Modification d'un événement"
+                       FontSize="24"/>
                 <Label Content="Nom"/>
                 <TextBox Name="modify_event_name"/>
                 <Separator/>
@@ -115,15 +119,29 @@
             <GridSplitter Width="4"
                           Grid.Column="1"
                           HorizontalAlignment="Stretch"/>
-            <DataGrid Name="main_panel"
-                      Grid.Column="2"
+            <StackPanel Orientation="Vertical"
+                        Grid.Column="2">
+                <ToolBar>
+                    <TextBox Name="searchbar"
+                             MinWidth="150"/>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Date de début :"/>
+                        <DatePicker Name="search_debut"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Date de fin :"/>
+                        <DatePicker Name="search_fin"/>
+                    </StackPanel>
+            </ToolBar>
+                <DataGrid Name="main_panel"
                       ItemsSource="{Binding}"
                       IsReadOnly="True"
                       SelectionChanged="Main_panel_SelectionChanged">
-                <DataGrid.Resources>
-                    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#FF0000"/>
-                </DataGrid.Resources>
-            </DataGrid>
+                    <DataGrid.Resources>
+                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#FF0000"/>
+                    </DataGrid.Resources>
+                </DataGrid>
+            </StackPanel>
             <GridSplitter Width="4"
                           Grid.Column="3"
                           HorizontalAlignment="Stretch"/>

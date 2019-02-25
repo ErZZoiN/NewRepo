@@ -16,6 +16,8 @@ using System.Windows.Shapes;
 using System.Data;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.IO;
+using Xceed.Wpf.Toolkit;
 
 namespace Activity_Manager
 {
@@ -24,11 +26,15 @@ namespace Activity_Manager
     /// </summary>
     public partial class MainWindow : Window
     {
+        #region VARIABLE
+
         public ObservableCollection<Activity> liste_activite = null;
-
         public Activity b;
+        private Activity current_activity = null;
+        private bool modify_flag = false;
+        public DirectoryInfo save_location=null;
 
-        Activity current_activity = null;
+        #endregion
 
         public MainWindow()
         {
@@ -61,17 +67,32 @@ namespace Activity_Manager
                 modify_event_debut_minute.Items.Add(i);
                 modify_event_fin_minute.Items.Add(i);
             }
+
+            searchbar.Foreground = Brushes.Gray;
+            searchbar.Text = "Recherche par lieu";
+            searchbar.GotKeyboardFocus += new KeyboardFocusChangedEventHandler(searchbar_GotKeyboardFocus);
+            searchbar.LostKeyboardFocus += new KeyboardFocusChangedEventHandler(searchbar_LostKeyboardFocus);
         }
 
         #region LISTENER
 
+        #region MENU
         private void Menu_about_Click(object sender, RoutedEventArgs e)
         {
             DateTime ajd = new DateTime();
             ajd = DateTime.Now;
-            MessageBox.Show("Clément Parmentier\nTOUS DROITS RESERVES !\n Date : " + ajd.ToShortDateString());
+            System.Windows.MessageBox.Show("Clément Parmentier\nTOUS DROITS RESERVES !\n Date : " + ajd.ToShortDateString());
         }
 
+        private void Menu_option_Click(object sender, RoutedEventArgs e)
+        {
+            Option win2 = new Option(this);
+            win2.Show();
+        }
+
+        #endregion
+
+        #region MAIN GRID
         private void Main_panel_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
          /*   if (main_panel.SelectedItem!=null)
@@ -95,29 +116,15 @@ namespace Activity_Manager
             else
                 modify_event.Visibility = Visibility.Collapsed;*/
         }
+        #endregion
 
         #region TOOLBAR
 
         private void Bouton_create_Click(object sender, RoutedEventArgs e)
         {
-            pDateTime tmp_debut = (DateTime)modify_event_debut.SelectedDate;
-            TimeSpan s = new TimeSpan(int.Parse(modify_event_debut_heure.SelectedItem.ToString()), int.Parse(modify_event_debut_minute.SelectedItem.ToString()), 0);
-            tmp_debut = tmp_debut.Date + s;
-
-            DateTime tmp_fin = (DateTime)modify_event_fin.SelectedDate;
-            TimeSpan s2 = new TimeSpan(int.Parse(modify_event_fin_heure.SelectedItem.ToString()), int.Parse(modify_event_fin_minute.SelectedItem.ToString()), 0);
-            tmp_fin = tmp_fin.Date + s2;
-
-            liste_activite.Add(new Activity
-            {
-                Intitule = modify_event_name.Text,
-                Lieu = modify_event_lieu.Text,
-                Description = modify_event_description.Text,
-                Nboccurence = int.Parse(modify_event_occurence.Text),
-                Periodicite1 = Activity.StringToPeriodicite(modify_event_periodicite.Text),
-                Debut = tmp_debut,
-                Fin = tmp_fin,
-            });
+            modify_flag = false;
+            modify_event_title.Content = "Création d'un événement";
+            modify_event.Visibility = Visibility.Visible;
         }
 
 
@@ -125,6 +132,8 @@ namespace Activity_Manager
         {
             if (main_panel.SelectedItem != null)
             {
+                modify_flag = true;
+                modify_event_title.Content = "Modification d'un événement";
                 modify_event.Visibility = Visibility.Visible;
                 current_activity = (Activity)main_panel.SelectedItem;
                 modify_event_description.Text = current_activity.Description;
@@ -159,7 +168,7 @@ namespace Activity_Manager
 
         #endregion
 
-        #endregion
+        #region MODIFY
 
         private void Modify_event_cancel_Click(object sender, RoutedEventArgs e)
         {
@@ -171,6 +180,11 @@ namespace Activity_Manager
             modify_event_periodicite.SelectedIndex = 0;
             modify_event_debut.SelectedDate = DateTime.Now;
             modify_event_fin.SelectedDate = DateTime.Now;
+
+            modify_event_fin_heure.SelectedIndex = 0;
+            modify_event_debut_heure.SelectedIndex = 0;
+            modify_event_fin_minute.SelectedIndex = 0;
+            modify_event_debut_minute.SelectedIndex = 0;
         }
 
         private void Modify_event_valider_Click(object sender, RoutedEventArgs e)
@@ -184,7 +198,7 @@ namespace Activity_Manager
             tmp_fin = tmp_fin.Date + s2;
 
             current_activity = (Activity)main_panel.SelectedItem;
-            if (main_panel.SelectedItem != null)
+            if ((main_panel.SelectedItem != null) && modify_flag)
             {
                 int index = main_panel.SelectedIndex;
                 liste_activite[index].Description = modify_event_description.Text;
@@ -199,6 +213,19 @@ namespace Activity_Manager
 
                 main_panel.Items.Refresh();
             }
+            else if(!modify_flag)
+            {
+                liste_activite.Add(new Activity
+                {
+                    Intitule = modify_event_name.Text,
+                    Lieu = modify_event_lieu.Text,
+                    Description = modify_event_description.Text,
+                    Nboccurence = int.Parse(modify_event_occurence.Text),
+                    Periodicite1 = Activity.StringToPeriodicite(modify_event_periodicite.Text),
+                    Debut = tmp_debut,
+                    Fin = tmp_fin,
+                });
+            }
 
             modify_event_description.Text = "";
             modify_event_lieu.Text = "";
@@ -207,6 +234,10 @@ namespace Activity_Manager
             modify_event_periodicite.SelectedIndex = 0;
             modify_event_debut.SelectedDate = DateTime.Now;
             modify_event_fin.SelectedDate = DateTime.Now;
+            modify_event_fin_heure.SelectedIndex = 0;
+            modify_event_debut_heure.SelectedIndex = 0;
+            modify_event_fin_minute.SelectedIndex = 0;
+            modify_event_debut_minute.SelectedIndex = 0;
 
             modify_event.Visibility = Visibility.Collapsed;
         }
@@ -222,7 +253,7 @@ namespace Activity_Manager
             tmp_fin = tmp_fin.Date + s2;
 
             current_activity = (Activity)main_panel.SelectedItem;
-            if (main_panel.SelectedItem != null)
+            if ((main_panel.SelectedItem != null) && modify_flag)
             {
                 int index = main_panel.SelectedIndex;
                 liste_activite[index].Description = modify_event_description.Text;
@@ -237,6 +268,53 @@ namespace Activity_Manager
 
                 main_panel.Items.Refresh();
             }
+            else if (!modify_flag)
+            {
+                liste_activite.Add(new Activity
+                {
+                    Intitule = modify_event_name.Text,
+                    Lieu = modify_event_lieu.Text,
+                    Description = modify_event_description.Text,
+                    Nboccurence = int.Parse(modify_event_occurence.Text),
+                    Periodicite1 = Activity.StringToPeriodicite(modify_event_periodicite.Text),
+                    Debut = tmp_debut,
+                    Fin = tmp_fin,
+                });
+            }
         }
+
+        #endregion
+
+        #region SEARCHBAR
+        private void searchbar_GotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            if (sender is TextBox)
+            {
+                //If nothing has been entered yet.
+                if (((TextBox)sender).Foreground == Brushes.Gray)
+                {
+                    ((TextBox)sender).Text = "";
+                    ((TextBox)sender).Foreground = Brushes.Black;
+                }
+            }
+        }
+
+
+        private void searchbar_LostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            //Make sure sender is the correct Control.
+            if (sender is TextBox)
+            {
+                //If nothing was entered, reset default text.
+                if (((TextBox)sender).Text.Trim().Equals(""))
+                {
+                    ((TextBox)sender).Foreground = Brushes.Gray;
+                    ((TextBox)sender).Text = "Recherche par lieu";
+                }
+            }
+        }
+        #endregion
+
+        #endregion
     }
 }
