@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Activity_Manager"
         mc:Ignorable="d"
         Title="Option" Height="450" Width="800">
-    <Grid>
+    <Grid x:Name="guk">
         <Grid.ColumnDefinitions>
             <ColumnDefinition MinWidth="150"
                               MaxWidth="200"/>

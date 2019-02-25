@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.IO;
+using Xceed.Wpf.Toolkit;
 
 namespace Activity_Manager
 {
@@ -22,7 +23,11 @@ namespace Activity_Manager
     {
         public Option(MainWindow mainWindow)
         {
+            DateTimePicker t = new DateTimePicker();
+            t.Height = 150;
+            t.Width = 200;
             InitializeComponent();
+            guk
         }
 
         private void Option_dossier_MouseDoubleClick(object sender, MouseButtonEventArgs e)
