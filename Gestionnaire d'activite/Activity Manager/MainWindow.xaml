@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:Activity_Manager"
         xmlns:forms="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
         mc:Ignorable="d"
+        xmlns:wpfTool="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
         Title="Gestionnaire d'activité" Height="650" Width="800"
         SizeToContent="WidthAndHeight">
     <StackPanel>
@@ -22,7 +23,8 @@
                           Name="menu_export"/>
                 <Separator/>
                 <MenuItem Header="Exit"
-                          Name="menu_exit"/>
+                          Name="menu_exit"
+                          Click="Menu_exit_Click"/>
             </MenuItem>
             <MenuItem Header="Tools">
                 <MenuItem Header="Option"
@@ -69,8 +71,10 @@
                 <Separator/>
                 <StackPanel Orientation="Horizontal">
                     <Label Content="Nombre d'occurrence"/>
-                    <TextBox Name="modify_event_occurence"
-                             Width="50"/>
+                    <!--<TextBox Name="modify_event_occurence"
+                             Width="50"/>-->
+                    <wpfTool:IntegerUpDown Name="modify_event_occurence"
+                                           Width="50"/>
                 </StackPanel>
                 <Label Content="Periodicite"/>
                 <ComboBox Name="modify_event_periodicite">
@@ -82,26 +86,12 @@
                 <StackPanel Orientation="Horizontal">
                     <StackPanel>
                         <Label Content="Date de début"/>
-                        <DatePicker Name="modify_event_debut"
-                                    SelectedDateFormat="Long"/>
-                        <StackPanel Orientation="Horizontal">
-                            <Label Content="Heure :"/>
-                            <ComboBox Name="modify_event_debut_heure"/>
-                            <Label Content="Minute :"/>
-                            <ComboBox Name="modify_event_debut_minute"/>
-                        </StackPanel>
+                        <wpfTool:DateTimePicker Name="modify_event_debut"/>
                     </StackPanel>
                     <Separator Width="5"/>
                     <StackPanel>
                         <Label Content="Date de fin"/>
-                        <DatePicker Name="modify_event_fin"
-                                    SelectedDateFormat="Long"/>
-                        <StackPanel Orientation="Horizontal">
-                            <Label Content="Heure :"/>
-                            <ComboBox Name="modify_event_fin_heure"/>
-                            <Label Content="Minute :"/>
-                            <ComboBox Name="modify_event_fin_minute"/>
-                        </StackPanel>
+                        <wpfTool:DateTimePicker Name="modify_event_fin"/>
                     </StackPanel>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">

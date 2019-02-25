@@ -21,33 +21,42 @@ namespace Activity_Manager
     /// </summary>
     public partial class Option : Window
     {
+        private MainWindow fenetre_principale;
+
         public Option(MainWindow mainWindow)
         {
-            DateTimePicker t = new DateTimePicker();
-            t.Height = 150;
-            t.Width = 200;
+            fenetre_principale = mainWindow;
             InitializeComponent();
-            guk
         }
 
         private void Option_dossier_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            
+            var dialog = new System.Windows.Forms.FolderBrowserDialog();
+            dialog.ShowDialog();
+            option_dossier.Text = dialog.SelectedPath;
         }
 
         private void Valider_Click(object sender, RoutedEventArgs e)
         {
+            Brush brush_background = new SolidColorBrush(background_color.SelectedColor.Value);
+            Brush brush_foreground = new SolidColorBrush(foreground_color.SelectedColor.Value);
+            fenetre_principale.name_list.Background = brush_background;
+            fenetre_principale.name_list.Foreground = brush_foreground;
+            this.Close();
 
         }
 
         private void Annuler_Click(object sender, RoutedEventArgs e)
         {
-
+            this.Close();
         }
 
         private void Appliquer_Click(object sender, RoutedEventArgs e)
         {
-
+            Brush brush_background = new SolidColorBrush(background_color.SelectedColor.Value);
+            Brush brush_foreground = new SolidColorBrush(foreground_color.SelectedColor.Value);
+            fenetre_principale.name_list.Background = brush_background;
+            fenetre_principale.name_list.Foreground = brush_foreground;
         }
     }
 }

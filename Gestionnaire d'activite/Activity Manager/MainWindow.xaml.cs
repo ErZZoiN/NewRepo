@@ -28,11 +28,21 @@ namespace Activity_Manager
     {
         #region VARIABLE
 
-        public ObservableCollection<Activity> liste_activite = null;
-        public Activity b;
+        private ObservableCollection<Activity> liste_activite = null;
+        private Activity b;
         private Activity current_activity = null;
         private bool modify_flag = false;
-        public DirectoryInfo save_location=null;
+        private string save_location = "";
+
+        #endregion
+
+        #region PROPRIETE
+
+        public String SaveLocation
+        {
+            get { return save_location; }
+            set { save_location = value; }
+        }
 
         #endregion
 
@@ -56,18 +66,6 @@ namespace Activity_Manager
             main_panel.DataContext=liste_activite;
             name_list.DataContext=liste_activite;
 
-            for(int i=0;i<24;i++)
-            {
-                modify_event_debut_heure.Items.Add(i);
-                modify_event_fin_heure.Items.Add(i);
-            }
-
-            for (int i = 0; i < 60; i++)
-            {
-                modify_event_debut_minute.Items.Add(i);
-                modify_event_fin_minute.Items.Add(i);
-            }
-
             searchbar.Foreground = Brushes.Gray;
             searchbar.Text = "Recherche par lieu";
             searchbar.GotKeyboardFocus += new KeyboardFocusChangedEventHandler(searchbar_GotKeyboardFocus);
@@ -88,6 +86,11 @@ namespace Activity_Manager
         {
             Option win2 = new Option(this);
             win2.Show();
+        }
+
+        private void Menu_exit_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
         }
 
         #endregion
@@ -139,21 +142,16 @@ namespace Activity_Manager
                 modify_event_description.Text = current_activity.Description;
                 modify_event_lieu.Text = current_activity.Lieu;
                 modify_event_name.Text = current_activity.Intitule;
-                modify_event_occurence.Text = current_activity.Nboccurence.ToString();
+                modify_event_occurence.Value = current_activity.Nboccurence;
                 modify_event_periodicite.Text = current_activity.Periodicite1.ToString();
 
                 modify_event_periodicite.Text = Activity.PeriodiciteToString(current_activity.Periodicite1);
 
-                modify_event_debut.SelectedDate = current_activity.Debut;
-                modify_event_fin.SelectedDate = current_activity.Fin;
+                modify_event_debut.Value = current_activity.Debut;
+                modify_event_fin.Value = current_activity.Fin;
 
-                modify_event_debut.DisplayDate = current_activity.Debut;
-                modify_event_fin.DisplayDate = current_activity.Fin;
-
-                modify_event_debut_heure.SelectedIndex = current_activity.Debut.Hour;
-                modify_event_fin_heure.SelectedIndex = current_activity.Fin.Hour;
-                modify_event_debut_minute.SelectedIndex = current_activity.Debut.Minute;
-                modify_event_fin_minute.SelectedIndex = current_activity.Fin.Minute;
+                modify_event_debut.Value = current_activity.Debut;
+                modify_event_fin.Value = current_activity.Fin;
             }
             else
                 modify_event.Visibility = Visibility.Collapsed;
@@ -176,26 +174,14 @@ namespace Activity_Manager
             modify_event_description.Text = "";
             modify_event_lieu.Text = "";
             modify_event_name.Text = "";
-            modify_event_occurence.Text = "";
+            modify_event_occurence.Value = 1;
             modify_event_periodicite.SelectedIndex = 0;
-            modify_event_debut.SelectedDate = DateTime.Now;
-            modify_event_fin.SelectedDate = DateTime.Now;
-
-            modify_event_fin_heure.SelectedIndex = 0;
-            modify_event_debut_heure.SelectedIndex = 0;
-            modify_event_fin_minute.SelectedIndex = 0;
-            modify_event_debut_minute.SelectedIndex = 0;
+            modify_event_debut.Value = DateTime.Now;
+            modify_event_fin.Value = DateTime.Now;
         }
 
         private void Modify_event_valider_Click(object sender, RoutedEventArgs e)
         {
-            DateTime tmp_debut = (DateTime)modify_event_debut.SelectedDate;
-            TimeSpan s = new TimeSpan(int.Parse(modify_event_debut_heure.SelectedItem.ToString()), int.Parse(modify_event_debut_minute.SelectedItem.ToString()), 0);
-            tmp_debut = tmp_debut.Date + s;
-
-            DateTime tmp_fin = (DateTime)modify_event_fin.SelectedDate;
-            TimeSpan s2 = new TimeSpan(int.Parse(modify_event_fin_heure.SelectedItem.ToString()), int.Parse(modify_event_fin_minute.SelectedItem.ToString()), 0);
-            tmp_fin = tmp_fin.Date + s2;
 
             current_activity = (Activity)main_panel.SelectedItem;
             if ((main_panel.SelectedItem != null) && modify_flag)
@@ -204,12 +190,12 @@ namespace Activity_Manager
                 liste_activite[index].Description = modify_event_description.Text;
                 liste_activite[index].Lieu = modify_event_lieu.Text;
                 liste_activite[index].Intitule = modify_event_name.Text;
-                liste_activite[index].Nboccurence = int.Parse(modify_event_occurence.Text);
+                liste_activite[index].Nboccurence = (int)modify_event_occurence.Value;
 
                 liste_activite[index].Periodicite1 = Activity.StringToPeriodicite(modify_event_periodicite.Text);
 
-                liste_activite[index].Debut = tmp_debut;
-                liste_activite[index].Fin = tmp_fin;
+                liste_activite[index].Debut = (DateTime)modify_event_debut.Value;
+                liste_activite[index].Fin = (DateTime)modify_event_fin.Value;
 
                 main_panel.Items.Refresh();
             }
@@ -220,37 +206,26 @@ namespace Activity_Manager
                     Intitule = modify_event_name.Text,
                     Lieu = modify_event_lieu.Text,
                     Description = modify_event_description.Text,
-                    Nboccurence = int.Parse(modify_event_occurence.Text),
+                    Nboccurence = (int)modify_event_occurence.Value,
                     Periodicite1 = Activity.StringToPeriodicite(modify_event_periodicite.Text),
-                    Debut = tmp_debut,
-                    Fin = tmp_fin,
+                    Debut = (DateTime)modify_event_debut.Value,
+                    Fin = (DateTime)modify_event_fin.Value,
                 });
             }
 
             modify_event_description.Text = "";
             modify_event_lieu.Text = "";
             modify_event_name.Text = "";
-            modify_event_occurence.Text = "";
+            modify_event_occurence.Value = 1;
             modify_event_periodicite.SelectedIndex = 0;
-            modify_event_debut.SelectedDate = DateTime.Now;
-            modify_event_fin.SelectedDate = DateTime.Now;
-            modify_event_fin_heure.SelectedIndex = 0;
-            modify_event_debut_heure.SelectedIndex = 0;
-            modify_event_fin_minute.SelectedIndex = 0;
-            modify_event_debut_minute.SelectedIndex = 0;
+            modify_event_debut.Value = DateTime.Now;
+            modify_event_fin.Value = DateTime.Now;
 
             modify_event.Visibility = Visibility.Collapsed;
         }
 
         private void Modify_event_apply_Click(object sender, RoutedEventArgs e)
         {
-            DateTime tmp_debut = (DateTime)modify_event_debut.SelectedDate;
-            TimeSpan s = new TimeSpan(int.Parse(modify_event_debut_heure.SelectedItem.ToString()), int.Parse(modify_event_debut_minute.SelectedItem.ToString()), 0);
-            tmp_debut = tmp_debut.Date + s;
-
-            DateTime tmp_fin = (DateTime)modify_event_fin.SelectedDate;
-            TimeSpan s2 = new TimeSpan(int.Parse(modify_event_fin_heure.SelectedItem.ToString()), int.Parse(modify_event_fin_minute.SelectedItem.ToString()), 0);
-            tmp_fin = tmp_fin.Date + s2;
 
             current_activity = (Activity)main_panel.SelectedItem;
             if ((main_panel.SelectedItem != null) && modify_flag)
@@ -259,12 +234,12 @@ namespace Activity_Manager
                 liste_activite[index].Description = modify_event_description.Text;
                 liste_activite[index].Lieu = modify_event_lieu.Text;
                 liste_activite[index].Intitule = modify_event_name.Text;
-                liste_activite[index].Nboccurence = int.Parse(modify_event_occurence.Text);
+                liste_activite[index].Nboccurence = (int)modify_event_occurence.Value;
 
                 liste_activite[index].Periodicite1 = Activity.StringToPeriodicite(modify_event_periodicite.Text);
 
-                liste_activite[index].Debut = tmp_debut;
-                liste_activite[index].Fin = tmp_fin;
+                liste_activite[index].Debut = (DateTime)modify_event_debut.Value;
+                liste_activite[index].Fin = (DateTime)modify_event_fin.Value;
 
                 main_panel.Items.Refresh();
             }
@@ -275,10 +250,10 @@ namespace Activity_Manager
                     Intitule = modify_event_name.Text,
                     Lieu = modify_event_lieu.Text,
                     Description = modify_event_description.Text,
-                    Nboccurence = int.Parse(modify_event_occurence.Text),
+                    Nboccurence = (int)modify_event_occurence.Value,
                     Periodicite1 = Activity.StringToPeriodicite(modify_event_periodicite.Text),
-                    Debut = tmp_debut,
-                    Fin = tmp_fin,
+                    Debut = (DateTime)modify_event_debut.Value,
+                    Fin = (DateTime)modify_event_fin.Value,
                 });
             }
         }

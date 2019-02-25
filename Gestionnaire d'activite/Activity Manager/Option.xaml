@@ -3,19 +3,19 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:wpfTool="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
         xmlns:local="clr-namespace:Activity_Manager"
         mc:Ignorable="d"
-        Title="Option" Height="450" Width="800">
+        Title="Option" Height="350" Width="800"
+        SizeToContent="WidthAndHeight">
     <Grid x:Name="guk">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition MinWidth="150"
-                              MaxWidth="200"/>
-            <ColumnDefinition MinWidth="300"
-                              Width="*"/>
+            <ColumnDefinition Width="Auto"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition MaxHeight="30"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition/>
             <RowDefinition MaxHeight="30"/>
         </Grid.RowDefinitions>
@@ -30,8 +30,27 @@
         <Label Content="Couleur du fond de la liste"
                Grid.Column="0"
                Grid.Row="1"/>
-        <StackPanel Grid.Column="2"
-                    Grid.Row="2"
+        <wpfTool:ColorPicker Name="background_color"
+                             Grid.Column="1"
+                             Grid.Row="1"
+                             MaxHeight="20"
+                             MinWidth="100"
+                             MaxWidth="150"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Top"/>
+        <Label Content="Couleur du texte de la liste"
+               Grid.Column="0"
+               Grid.Row="2"/>
+        <wpfTool:ColorPicker Name="foreground_color"
+                             Grid.Column="1"
+                             Grid.Row="2"
+                             MaxHeight="20"
+                             MinWidth="100"
+                             MaxWidth="150"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Top"/>
+        <StackPanel Grid.Column="1"
+                    Grid.Row="3"
                     Orientation="Horizontal"
                     HorizontalAlignment="Right">
             <Button Name="Valider"
