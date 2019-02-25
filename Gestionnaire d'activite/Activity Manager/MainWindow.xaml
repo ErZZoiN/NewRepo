@@ -8,14 +8,16 @@
         mc:Ignorable="d"
         xmlns:wpfTool="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
         Title="Gestionnaire d'activité" Height="650" Width="800"
-        SizeToContent="WidthAndHeight">
+        SizeToContent="WidthAndHeight"
+        Closing="Window_Closing">
     <StackPanel>
         <Menu>
             <MenuItem Header="File">
                 <MenuItem Header="Open"
                           Name="menu_open"/>
                 <MenuItem Header="Save"
-                          Name="menu_save"/>
+                          Name="menu_save"
+                          Click="Menu_save_Click"/>
                 <Separator/>
                 <MenuItem Header="Import"
                           Name="menu_import"/>
@@ -71,8 +73,6 @@
                 <Separator/>
                 <StackPanel Orientation="Horizontal">
                     <Label Content="Nombre d'occurrence"/>
-                    <!--<TextBox Name="modify_event_occurence"
-                             Width="50"/>-->
                     <wpfTool:IntegerUpDown Name="modify_event_occurence"
                                            Width="50"/>
                 </StackPanel>

@@ -27,21 +27,36 @@ namespace Activity_Manager
         {
             fenetre_principale = mainWindow;
             InitializeComponent();
+            option_dossier.Text = mainWindow.SaveLocation;
         }
 
         private void Option_dossier_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             var dialog = new System.Windows.Forms.FolderBrowserDialog();
+            dialog.SelectedPath = option_dossier.Text;
             dialog.ShowDialog();
             option_dossier.Text = dialog.SelectedPath;
         }
 
         private void Valider_Click(object sender, RoutedEventArgs e)
         {
-            Brush brush_background = new SolidColorBrush(background_color.SelectedColor.Value);
-            Brush brush_foreground = new SolidColorBrush(foreground_color.SelectedColor.Value);
-            fenetre_principale.name_list.Background = brush_background;
-            fenetre_principale.name_list.Foreground = brush_foreground;
+            //try
+            //{
+            //    Brush brush_background = new SolidColorBrush(background_color.SelectedColor.Value);
+            //    fenetre_principale.name_list.Background = brush_background;
+            //}
+            //catch (InvalidOperationException) { }
+
+            //try
+            //{
+            //    Brush brush_foreground = new SolidColorBrush(foreground_color.SelectedColor.Value);
+            //    fenetre_principale.name_list.Foreground = brush_foreground;
+            //}
+            //catch (InvalidOperationException) { }
+
+            //fenetre_principale.SaveLocation = option_dossier.Text;
+            Appliquer_Click(sender, e);
+
             this.Close();
 
         }
@@ -53,10 +68,21 @@ namespace Activity_Manager
 
         private void Appliquer_Click(object sender, RoutedEventArgs e)
         {
-            Brush brush_background = new SolidColorBrush(background_color.SelectedColor.Value);
-            Brush brush_foreground = new SolidColorBrush(foreground_color.SelectedColor.Value);
-            fenetre_principale.name_list.Background = brush_background;
-            fenetre_principale.name_list.Foreground = brush_foreground;
+            try
+            {
+                Brush brush_background = new SolidColorBrush(background_color.SelectedColor.Value);
+                fenetre_principale.name_list.Background = brush_background;
+            }
+            catch (InvalidOperationException) { }
+
+            try
+            {
+                Brush brush_foreground = new SolidColorBrush(foreground_color.SelectedColor.Value);
+                fenetre_principale.name_list.Foreground = brush_foreground;
+            }
+            catch (InvalidOperationException) { }
+
+            fenetre_principale.SaveLocation = option_dossier.Text;
         }
     }
 }

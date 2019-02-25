@@ -18,6 +18,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using Xceed.Wpf.Toolkit;
+using Microsoft.Win32;
 
 namespace Activity_Manager
 {
@@ -26,8 +27,9 @@ namespace Activity_Manager
     /// </summary>
     public partial class MainWindow : Window
     {
-        #region VARIABLE
+        static string saving = Directory.GetCurrentDirectory() + "pref.dat";
 
+        #region VARIABLE
         private ObservableCollection<Activity> liste_activite = null;
         private Activity b;
         private Activity current_activity = null;
@@ -48,6 +50,7 @@ namespace Activity_Manager
 
         public MainWindow()
         {
+            SaveLocation = System.IO.Directory.GetCurrentDirectory();
             b = new Activity
             {
                 Intitule = "La vie de Clément",
@@ -60,6 +63,16 @@ namespace Activity_Manager
             };
 
             InitializeComponent();
+
+            try
+            {
+                byte[] bytes = File.ReadAllBytes(saving);
+                SaveLocation = Encoding.ASCII.GetString(bytes);
+            }
+            catch(FileNotFoundException)
+            {
+                SaveLocation = Directory.GetCurrentDirectory();
+            }
 
             liste_activite = new ObservableCollection<Activity>();
             liste_activite.Add(b);
@@ -91,6 +104,13 @@ namespace Activity_Manager
         private void Menu_exit_Click(object sender, RoutedEventArgs e)
         {
             Close();
+        }
+
+        private void Menu_save_Click(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.InitialDirectory = SaveLocation;
+            saveFileDialog.ShowDialog();
         }
 
         #endregion
@@ -291,5 +311,14 @@ namespace Activity_Manager
         #endregion
 
         #endregion
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            byte[] bytes = Encoding.ASCII.GetBytes(SaveLocation);
+
+            FileStream fd = File.Open(saving, FileMode.Create, FileAccess.ReadWrite);
+            fd.Write(bytes, 0, SaveLocation.Length);
+            fd.Close();
+        }
     }
 }
