@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Collections.ObjectModel;
 
 namespace LibrairieActivity
 {
-    public class Activity
+    [Serializable]
+    public class Activity : IComparable<Activity>
     {
         public enum periodicite { quotidien, hebdomadaire, mensuel, annuel };
 
@@ -73,6 +75,11 @@ namespace LibrairieActivity
                 default:
                     return periodicite.quotidien;
             }
+        }
+
+        public int CompareTo(Activity a)
+        {
+            return 1;
         }
     }
 

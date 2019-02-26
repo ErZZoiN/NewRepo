@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<ArrayOfActivity xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Activity>
+    <Intitule>La vie de Clément</Intitule>
+    <Description>La plus grosse teuf de Yoyo de ta life. lol.</Description>
+    <Lieu>The world</Lieu>
+    <Debut>1995-08-03T00:00:00</Debut>
+    <Fin>2019-02-26T14:57:51.568501+01:00</Fin>
+    <Nboccurence>3</Nboccurence>
+    <Periodicite1>mensuel</Periodicite1>
+  </Activity>
+  <Activity>
+    <Intitule>iougt</Intitule>
+    <Description>ioutiyt</Description>
+    <Lieu>iyt</Lieu>
+    <Debut>2019-02-12T00:00:00</Debut>
+    <Fin>2019-02-23T00:00:00</Fin>
+    <Nboccurence>1</Nboccurence>
+    <Periodicite1>hebdomadaire</Periodicite1>
+  </Activity>
+</ArrayOfActivity>

@@ -14,7 +14,8 @@
         <Menu>
             <MenuItem Header="File">
                 <MenuItem Header="Open"
-                          Name="menu_open"/>
+                          Name="menu_open"
+                          Click="Menu_open_Click"/>
                 <MenuItem Header="Save"
                           Name="menu_save"
                           Click="Menu_save_Click"/>
@@ -122,7 +123,7 @@
                         <Label Content="Date de fin :"/>
                         <DatePicker Name="search_fin"/>
                     </StackPanel>
-            </ToolBar>
+                </ToolBar>
                 <DataGrid Name="main_panel"
                       ItemsSource="{Binding}"
                       IsReadOnly="True"
@@ -136,7 +137,7 @@
                           Grid.Column="3"
                           HorizontalAlignment="Stretch"/>
             <ListBox Name="name_list"
-                     ItemsSource="{Binding Path=Intitule}"
+                     ItemsSource="{Binding}"
                      Grid.Column="4"/>
         </Grid>
     </StackPanel>

@@ -33,7 +33,7 @@ namespace Activity_Manager
         static string saving = Directory.GetCurrentDirectory() + "pref.dat";
 
         #region VARIABLE
-        private ObservableCollection<Activity> _liste_activite = null;
+        private ActivityCollection _liste_activite = null;
         private Activity b;
         private Activity _current_activity = null;
         private bool _modify_flag = false;
@@ -77,10 +77,10 @@ namespace Activity_Manager
                 SaveLocation = Directory.GetCurrentDirectory();
             }
 
-            _liste_activite = new ObservableCollection<Activity>();
-            _liste_activite.Add(b);
-            main_panel.DataContext=_liste_activite;
-            name_list.DataContext=_liste_activite;
+            _liste_activite = new ActivityCollection();
+            _liste_activite.ListeActivite.Add(b);
+            main_panel.DataContext=_liste_activite.ListeActivite;
+            name_list.DataContext=_liste_activite.ListeIntitule;
 
             searchbar.Foreground = Brushes.Gray;
             searchbar.Text = "Recherche par lieu";
@@ -113,7 +113,20 @@ namespace Activity_Manager
         {
             SaveFileDialog saveFileDialog = new SaveFileDialog();
             saveFileDialog.InitialDirectory = SaveLocation;
+            saveFileDialog.AddExtension = true;
+            saveFileDialog.DefaultExt = ".xml";
             saveFileDialog.ShowDialog();
+
+            _liste_activite.SaveListOfActivity(saveFileDialog.FileName);
+        }
+
+        private void Menu_open_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.InitialDirectory = SaveLocation;
+            openFileDialog.DefaultExt = ".xml";
+            openFileDialog.ShowDialog();
+            _liste_activite.LoadFromXMLFormat(openFileDialog.FileName);
         }
 
         #endregion
@@ -183,7 +196,7 @@ namespace Activity_Manager
         private void Bouton_delete_Click(object sender, RoutedEventArgs e)
         {
             if(main_panel.SelectedIndex>=0)
-                _liste_activite.RemoveAt(main_panel.SelectedIndex);
+                _liste_activite.ListeActivite.RemoveAt(main_panel.SelectedIndex);
         }
 
 
@@ -210,21 +223,21 @@ namespace Activity_Manager
             if ((main_panel.SelectedItem != null) && _modify_flag)
             {
                 int index = main_panel.SelectedIndex;
-                _liste_activite[index].Description = modify_event_description.Text;
-                _liste_activite[index].Lieu = modify_event_lieu.Text;
-                _liste_activite[index].Intitule = modify_event_name.Text;
-                _liste_activite[index].Nboccurence = (int)modify_event_occurence.Value;
+                _liste_activite.ListeActivite[index].Description = modify_event_description.Text;
+                _liste_activite.ListeActivite[index].Lieu = modify_event_lieu.Text;
+                _liste_activite.ListeActivite[index].Intitule = modify_event_name.Text;
+                _liste_activite.ListeActivite[index].Nboccurence = (int)modify_event_occurence.Value;
 
-                _liste_activite[index].Periodicite1 = Activity.StringToPeriodicite(modify_event_periodicite.Text);
+                _liste_activite.ListeActivite[index].Periodicite1 = Activity.StringToPeriodicite(modify_event_periodicite.Text);
 
-                _liste_activite[index].Debut = (DateTime)modify_event_debut.Value;
-                _liste_activite[index].Fin = (DateTime)modify_event_fin.Value;
+                _liste_activite.ListeActivite[index].Debut = (DateTime)modify_event_debut.Value;
+                _liste_activite.ListeActivite[index].Fin = (DateTime)modify_event_fin.Value;
 
                 main_panel.Items.Refresh();
             }
             else if(!_modify_flag)
             {
-                _liste_activite.Add(new Activity
+                _liste_activite.ListeActivite.Add(new Activity
                 {
                     Intitule = modify_event_name.Text,
                     Lieu = modify_event_lieu.Text,
@@ -254,21 +267,21 @@ namespace Activity_Manager
             if ((main_panel.SelectedItem != null) && _modify_flag)
             {
                 int index = main_panel.SelectedIndex;
-                _liste_activite[index].Description = modify_event_description.Text;
-                _liste_activite[index].Lieu = modify_event_lieu.Text;
-                _liste_activite[index].Intitule = modify_event_name.Text;
-                _liste_activite[index].Nboccurence = (int)modify_event_occurence.Value;
+                _liste_activite.ListeActivite[index].Description = modify_event_description.Text;
+                _liste_activite.ListeActivite[index].Lieu = modify_event_lieu.Text;
+                _liste_activite.ListeActivite[index].Intitule = modify_event_name.Text;
+                _liste_activite.ListeActivite[index].Nboccurence = (int)modify_event_occurence.Value;
 
-                _liste_activite[index].Periodicite1 = Activity.StringToPeriodicite(modify_event_periodicite.Text);
+                _liste_activite.ListeActivite[index].Periodicite1 = Activity.StringToPeriodicite(modify_event_periodicite.Text);
 
-                _liste_activite[index].Debut = (DateTime)modify_event_debut.Value;
-                _liste_activite[index].Fin = (DateTime)modify_event_fin.Value;
+                _liste_activite.ListeActivite[index].Debut = (DateTime)modify_event_debut.Value;
+                _liste_activite.ListeActivite[index].Fin = (DateTime)modify_event_fin.Value;
 
                 main_panel.Items.Refresh();
             }
             else if (!_modify_flag)
             {
-                _liste_activite.Add(new Activity
+                _liste_activite.ListeActivite.Add(new Activity
                 {
                     Intitule = modify_event_name.Text,
                     Lieu = modify_event_lieu.Text,
