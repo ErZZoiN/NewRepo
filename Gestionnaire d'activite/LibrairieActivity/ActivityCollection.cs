@@ -22,37 +22,6 @@ namespace LibrairieActivity
 
         private void ListeActivite_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            int flag = 0;
-            switch (e.Action)
-            {
-                case System.Collections.Specialized.NotifyCollectionChangedAction.Add:
-                    //Sort();
-                    break;
-                case System.Collections.Specialized.NotifyCollectionChangedAction.Remove:
-                    /*foreach(String s in ListeIntitule)
-                    {
-                        flag = 0;
-                        foreach(Activity a in ListeActivite)
-                        {
-                            if (a.Intitule == s)
-                                flag = 1;
-                        }
-                        if (flag == 0)
-                        {
-                            ListeIntitule.Remove(s);
-                            break;
-                        }
-                    }*/
-                    break;
-                case System.Collections.Specialized.NotifyCollectionChangedAction.Replace:
-                    break;
-                case System.Collections.Specialized.NotifyCollectionChangedAction.Move:
-                    break;
-                case System.Collections.Specialized.NotifyCollectionChangedAction.Reset:
-                    break;
-                default:
-                    break;
-            }
             ListeIntitule.Clear();
             foreach (Activity a in ListeActivite)
             {
@@ -95,7 +64,7 @@ namespace LibrairieActivity
             ListeActivite.Clear();
             using (Stream fStream = File.OpenRead(filename))
             {
-                ((List<Activity>)xmlFormat.Deserialize(fStream)).ForEach(item => ListeActivite.Add(item));
+                ((List<Activity>)xmlFormat.Deserialize(fStream)).ForEach(item => Add(item));
             }
         }
 

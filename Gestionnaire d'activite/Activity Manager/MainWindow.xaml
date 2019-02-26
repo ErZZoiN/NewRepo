@@ -7,8 +7,8 @@
         xmlns:forms="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
         mc:Ignorable="d"
         xmlns:wpfTool="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
-        Title="Gestionnaire d'activité" Height="650" Width="800"
-        SizeToContent="WidthAndHeight"
+        Title="Gestionnaire d'activité" Height="650" Width="1200"
+        SizeToContent="Width"
         Closing="Window_Closing">
     <StackPanel>
         <Menu>
@@ -46,7 +46,7 @@
             <Button Name="bouton_modify"
                     Click="Bouton_modify_Click">Modifier une activité</Button>
         </ToolBar>
-        <Grid VerticalAlignment="Center"
+        <Grid VerticalAlignment="Stretch"
               HorizontalAlignment="Stretch">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
@@ -114,6 +114,10 @@
                         Grid.Column="2">
                 <ToolBar>
                     <TextBox Name="searchbar"
+                             GotKeyboardFocus="Searchbar_GotKeyboardFocus"
+                             LostKeyboardFocus="Searchbar_LostKeyboardFocus"
+                             TextChanged="Searchbar_TextChanged"
+                             Foreground="Gray"
                              MinWidth="150"/>
                     <StackPanel Orientation="Horizontal">
                         <Label Content="Date de début :"/>

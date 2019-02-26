@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<ArrayOfActivity xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Activity>
+    <Intitule>Royauté Presleyienne</Intitule>
+    <Description>Trop d'ambiance sa mère.</Description>
+    <Lieu>Memphis</Lieu>
+    <Debut>1954-01-15T13:27:08.826+01:00</Debut>
+    <Fin>1977-08-16T21:34:08.831+02:00</Fin>
+    <Nboccurence>3</Nboccurence>
+    <Periodicite1>mensuel</Periodicite1>
+  </Activity>
+  <Activity>
+    <Intitule>Règne de Charles de Gaulle</Intitule>
+    <Description>C'était chaud mais on a survécu.</Description>
+    <Lieu>L'Elysée</Lieu>
+    <Debut>1959-01-08T12:30:27</Debut>
+    <Fin>1969-04-28T12:00:17</Fin>
+    <Nboccurence>1</Nboccurence>
+    <Periodicite1>quotidien</Periodicite1>
+  </Activity>
+  <Activity>
+    <Intitule>Tyrannie Bushienne</Intitule>
+    <Description>C'était pas ouf.</Description>
+    <Lieu>Washington</Lieu>
+    <Debut>1989-01-20T13:27:08.826+01:00</Debut>
+    <Fin>1993-01-20T21:34:08.831+01:00</Fin>
+    <Nboccurence>1</Nboccurence>
+    <Periodicite1>quotidien</Periodicite1>
+  </Activity>
+  <Activity>
+    <Intitule>Règne de Jacque Chirac</Intitule>
+    <Description>Franchement c'était sympa.</Description>
+    <Lieu>L'Elysée</Lieu>
+    <Debut>1995-05-17T12:30:27</Debut>
+    <Fin>2007-05-16T12:00:17</Fin>
+    <Nboccurence>1</Nboccurence>
+    <Periodicite1>quotidien</Periodicite1>
+  </Activity>
+  <Activity>
+    <Intitule>La vie de Clément</Intitule>
+    <Description>La plus grosse teuf de Yoyo de ta life. lol.</Description>
+    <Lieu>The world</Lieu>
+    <Debut>1995-08-03T00:00:00</Debut>
+    <Fin>2019-02-26T21:28:01.7688702+01:00</Fin>
+    <Nboccurence>3</Nboccurence>
+    <Periodicite1>mensuel</Periodicite1>
+  </Activity>
+</ArrayOfActivity>

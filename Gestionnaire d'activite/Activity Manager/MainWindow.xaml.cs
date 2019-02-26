@@ -30,11 +30,12 @@ namespace Activity_Manager
         // Pour sauvegarder le dossier de sauvegarde d'une session à l'autre,
         // on enregistre dans un fichier le chemin du dossier de sauvegarde.
         // Celui-ci sera chargé au démarrage du programme, et enregistré à sa fermeture.
+        static string searchbar_hint = "Recherche par lieu";
         static string saving = Directory.GetCurrentDirectory() + "pref.dat";
 
         #region VARIABLE
         private ActivityCollection _liste_activite = null;
-        private Activity b;
+        private ObservableCollection<Activity> _display_list = null;
         private Activity _current_activity = null;
         private bool _modify_flag = false;
         private string _save_location = "";
@@ -49,23 +50,19 @@ namespace Activity_Manager
             set { _save_location = value; }
         }
 
+        public ObservableCollection<Activity> DisplayList { get => _display_list; set => _display_list = value; }
+
         #endregion
 
         public MainWindow()
         {
             SaveLocation = System.IO.Directory.GetCurrentDirectory();
-            b = new Activity
-            {
-                Intitule = "La vie de Clément",
-                Lieu = "The world",
-                Description = "La plus grosse teuf de Yoyo de ta life. lol.",
-                Nboccurence = 3,
-                Periodicite1 = Activity.periodicite.mensuel,
-                Debut = new DateTime(1995, 8, 3),
-                Fin = DateTime.Now,
-            };
+            _liste_activite = new ActivityCollection();
+            DisplayList = new ObservableCollection<Activity>(_liste_activite.ListeActivite);
+            _liste_activite.ListeActivite.CollectionChanged += ListeActivite_CollectionChanged;
 
             InitializeComponent();
+            searchbar.Text = searchbar_hint;
 
             try
             {
@@ -77,15 +74,8 @@ namespace Activity_Manager
                 SaveLocation = Directory.GetCurrentDirectory();
             }
 
-            _liste_activite = new ActivityCollection();
-            _liste_activite.Add(b);
-            main_panel.DataContext=_liste_activite.ListeActivite;
+            main_panel.DataContext=DisplayList;
             name_list.DataContext=_liste_activite.ListeIntitule;
-
-            searchbar.Foreground = Brushes.Gray;
-            searchbar.Text = "Recherche par lieu";
-            searchbar.GotKeyboardFocus += new KeyboardFocusChangedEventHandler(searchbar_GotKeyboardFocus);
-            searchbar.LostKeyboardFocus += new KeyboardFocusChangedEventHandler(searchbar_LostKeyboardFocus);
         }
 
         #region LISTENER
@@ -281,7 +271,7 @@ namespace Activity_Manager
             }
             else if (!_modify_flag)
             {
-                _liste_activite.ListeActivite.Add(new Activity
+                _liste_activite.Add(new Activity
                 {
                     Intitule = modify_event_name.Text,
                     Lieu = modify_event_lieu.Text,
@@ -297,7 +287,19 @@ namespace Activity_Manager
         #endregion
 
         #region SEARCHBAR
-        private void searchbar_GotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+
+        private void Searchbar_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            DisplayList.Clear();
+            foreach(Activity a in _liste_activite.ListeActivite)
+            {
+                if (a.Lieu.ToLower().Contains(searchbar.Text.ToLower())||searchbar.Text==searchbar_hint)
+                    DisplayList.Add(a);
+            }
+        }
+
+        #region HINT
+        private void Searchbar_GotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
             if (sender is TextBox)
             {
@@ -311,7 +313,7 @@ namespace Activity_Manager
         }
 
 
-        private void searchbar_LostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        private void Searchbar_LostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
             //Make sure sender is the correct Control.
             if (sender is TextBox)
@@ -320,10 +322,12 @@ namespace Activity_Manager
                 if (((TextBox)sender).Text.Trim().Equals(""))
                 {
                     ((TextBox)sender).Foreground = Brushes.Gray;
-                    ((TextBox)sender).Text = "Recherche par lieu";
+                    ((TextBox)sender).Text = searchbar_hint;
                 }
             }
         }
+        #endregion
+
         #endregion
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -333,6 +337,16 @@ namespace Activity_Manager
             FileStream fd = File.Open(saving, FileMode.Create, FileAccess.ReadWrite);
             fd.Write(bytes, 0, SaveLocation.Length);
             fd.Close();
+        }
+
+        private void ListeActivite_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            DisplayList.Clear();
+            foreach (Activity a in _liste_activite.ListeActivite)
+            {
+                if (a.Lieu.ToLower().Contains(searchbar.Text.ToLower()) || searchbar.Text == searchbar_hint)
+                    DisplayList.Add(a);
+            }
         }
 
         #endregion

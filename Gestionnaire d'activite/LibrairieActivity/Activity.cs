@@ -79,7 +79,7 @@ namespace LibrairieActivity
 
         public int CompareTo(Activity a)
         {
-            return Debut.CompareTo(a.Debut);
+            return DateTime.Compare(Debut, a.Debut);
         }
     }
 
