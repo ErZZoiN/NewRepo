@@ -26,10 +26,10 @@ namespace LibrairieActivity
             switch (e.Action)
             {
                 case System.Collections.Specialized.NotifyCollectionChangedAction.Add:
-                    ListeIntitule.Add(ListeActivite.Last<Activity>().Intitule);
+                    //Sort();
                     break;
                 case System.Collections.Specialized.NotifyCollectionChangedAction.Remove:
-                    foreach(String s in ListeIntitule)
+                    /*foreach(String s in ListeIntitule)
                     {
                         flag = 0;
                         foreach(Activity a in ListeActivite)
@@ -42,7 +42,7 @@ namespace LibrairieActivity
                             ListeIntitule.Remove(s);
                             break;
                         }
-                    }
+                    }*/
                     break;
                 case System.Collections.Specialized.NotifyCollectionChangedAction.Replace:
                     break;
@@ -53,9 +53,18 @@ namespace LibrairieActivity
                 default:
                     break;
             }
+            ListeIntitule.Clear();
+            foreach (Activity a in ListeActivite)
+            {
+                ListeIntitule.Add(a.Intitule);
+            }
         }
 
-        public ObservableCollection<Activity> ListeActivite { get => _liste; set => _liste = value; }
+        public ObservableCollection<Activity> ListeActivite
+        {
+            get => _liste;
+            set => _liste = value;
+        }
         public ObservableCollection<String> ListeIntitule
         {
             get;set;
@@ -88,6 +97,24 @@ namespace LibrairieActivity
             {
                 ((List<Activity>)xmlFormat.Deserialize(fStream)).ForEach(item => ListeActivite.Add(item));
             }
+        }
+
+        public void Sort()
+        {
+            List<Activity> sortableList = new List<Activity>(ListeActivite);
+
+            sortableList.Sort();
+
+            for (int i = 0; i < sortableList.Count; i++)
+            {
+                ListeActivite.Move(ListeActivite.IndexOf(sortableList[i]), i);
+            }
+        }
+
+        public void Add(Activity a)
+        {
+            ListeActivite.Add(a);
+            Sort();
         }
     }
 }

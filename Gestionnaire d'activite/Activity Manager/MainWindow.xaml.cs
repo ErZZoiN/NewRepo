@@ -78,7 +78,7 @@ namespace Activity_Manager
             }
 
             _liste_activite = new ActivityCollection();
-            _liste_activite.ListeActivite.Add(b);
+            _liste_activite.Add(b);
             main_panel.DataContext=_liste_activite.ListeActivite;
             name_list.DataContext=_liste_activite.ListeIntitule;
 
@@ -237,7 +237,7 @@ namespace Activity_Manager
             }
             else if(!_modify_flag)
             {
-                _liste_activite.ListeActivite.Add(new Activity
+                _liste_activite.Add(new Activity
                 {
                     Intitule = modify_event_name.Text,
                     Lieu = modify_event_lieu.Text,
