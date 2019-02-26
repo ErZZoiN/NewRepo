@@ -298,6 +298,16 @@ namespace Activity_Manager
             }
         }
 
+        /*private void Search_debut_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            
+        }
+
+        private void Search_fin_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }*/
+
         #region HINT
         private void Searchbar_GotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
@@ -350,5 +360,15 @@ namespace Activity_Manager
         }
 
         #endregion
+
+        private void ChangeDisplayList(object sender, EventArgs e)
+        {
+            DisplayList.Clear();
+            foreach (Activity a in _liste_activite.ListeActivite)
+            {
+                if (a.Lieu.ToLower().Contains(searchbar.Text.ToLower()) || searchbar.Text == searchbar_hint && (DateTime.Compare(a.Debut,(DateTime)search_debut.SelectedDate)>0 && DateTime.Compare(a.Fin, (DateTime)search_fin.SelectedDate) < 0))
+                    DisplayList.Add(a);
+            }
+        }
     }
 }

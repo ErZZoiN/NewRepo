@@ -121,11 +121,13 @@
                              MinWidth="150"/>
                     <StackPanel Orientation="Horizontal">
                         <Label Content="Date de début :"/>
-                        <DatePicker Name="search_debut"/>
+                        <DatePicker Name="search_debut"
+                                    SelectedDateChanged="ChangeDisplayList"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <Label Content="Date de fin :"/>
-                        <DatePicker Name="search_fin"/>
+                        <DatePicker Name="search_fin"
+                                    SelectedDateChanged="ChangeDisplayList"/>
                     </StackPanel>
                 </ToolBar>
                 <DataGrid Name="main_panel"
