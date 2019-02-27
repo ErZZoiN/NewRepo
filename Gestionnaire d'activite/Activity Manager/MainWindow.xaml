@@ -116,7 +116,7 @@
                     <TextBox Name="searchbar"
                              GotKeyboardFocus="Searchbar_GotKeyboardFocus"
                              LostKeyboardFocus="Searchbar_LostKeyboardFocus"
-                             TextChanged="Searchbar_TextChanged"
+                             TextChanged="ChangeDisplayList"
                              Foreground="Gray"
                              MinWidth="150"/>
                     <StackPanel Orientation="Horizontal">

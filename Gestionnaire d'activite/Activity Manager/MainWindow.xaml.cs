@@ -366,8 +366,18 @@ namespace Activity_Manager
             DisplayList.Clear();
             foreach (Activity a in _liste_activite.ListeActivite)
             {
-                if (a.Lieu.ToLower().Contains(searchbar.Text.ToLower()) || searchbar.Text == searchbar_hint && (DateTime.Compare(a.Debut,(DateTime)search_debut.SelectedDate)>0 && DateTime.Compare(a.Fin, (DateTime)search_fin.SelectedDate) < 0))
-                    DisplayList.Add(a);
+                if (a.Lieu.ToLower().Contains(searchbar.Text.ToLower()) || searchbar.Text == searchbar_hint)
+                {
+                    try
+                    {
+                        if ((DateTime.Compare(a.Debut, (DateTime)search_debut.SelectedDate) > 0 && DateTime.Compare(a.Fin, (DateTime)search_fin.SelectedDate) < 0))
+                            DisplayList.Add(a);
+                    }
+                    catch (InvalidOperationException)
+                    {
+                        DisplayList.Add(a);
+                    }
+                }
             }
         }
     }
