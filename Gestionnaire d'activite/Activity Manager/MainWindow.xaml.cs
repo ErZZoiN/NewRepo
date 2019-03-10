@@ -107,7 +107,7 @@ namespace Activity_Manager
             saveFileDialog.DefaultExt = ".xml";
             saveFileDialog.ShowDialog();
 
-            _liste_activite.SaveListOfActivity(saveFileDialog.FileName);
+            _liste_activite.SaveInXMLFormat(saveFileDialog.FileName);
         }
 
         private void Menu_open_Click(object sender, RoutedEventArgs e)
@@ -117,6 +117,26 @@ namespace Activity_Manager
             openFileDialog.DefaultExt = ".xml";
             openFileDialog.ShowDialog();
             _liste_activite.LoadFromXMLFormat(openFileDialog.FileName);
+        }
+
+        private void Menu_export_Click(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.InitialDirectory = SaveLocation;
+            saveFileDialog.AddExtension = true;
+            saveFileDialog.DefaultExt = ".csv";
+            saveFileDialog.ShowDialog();
+
+            _liste_activite.SaveInCSVFormat(saveFileDialog.FileName);
+        }
+
+        private void Menu_import_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.InitialDirectory = SaveLocation;
+            openFileDialog.DefaultExt = ".csv";
+            openFileDialog.ShowDialog();
+            _liste_activite.LoadFromCSVFormat(openFileDialog.FileName);
         }
 
         #endregion
@@ -288,25 +308,34 @@ namespace Activity_Manager
 
         #region SEARCHBAR
 
-        private void Searchbar_TextChanged(object sender, TextChangedEventArgs e)
+        private void ChangeDisplayList(object sender, EventArgs e)
         {
             DisplayList.Clear();
-            foreach(Activity a in _liste_activite.ListeActivite)
+            foreach (Activity a in _liste_activite.ListeActivite)
             {
-                if (a.Lieu.ToLower().Contains(searchbar.Text.ToLower())||searchbar.Text==searchbar_hint)
-                    DisplayList.Add(a);
+                if (a.Lieu.ToLower().Contains(searchbar.Text.ToLower()) || searchbar.Text == searchbar_hint)
+                {
+                    if (search_debut.SelectedDate.HasValue)
+                    {
+                        try
+                        {
+                            if ((DateTime.Compare(a.Debut, (DateTime)search_debut.SelectedDate) > 0) && (DateTime.Compare(a.Fin, (DateTime)search_fin.SelectedDate) < 0))
+                                DisplayList.Add(a);
+                        }
+                        catch(InvalidOperationException)
+                        {
+                            DisplayList.Add(a);
+                        }
+                    }
+                    else
+                    {
+                        if (DateTime.Compare(a.Fin, (DateTime)search_fin.SelectedDate) < 0)
+                            DisplayList.Add(a);
+                    }
+
+                }
             }
         }
-
-        /*private void Search_debut_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
-        {
-            
-        }
-
-        private void Search_fin_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }*/
 
         #region HINT
         private void Searchbar_GotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
@@ -354,31 +383,14 @@ namespace Activity_Manager
             DisplayList.Clear();
             foreach (Activity a in _liste_activite.ListeActivite)
             {
-                if (a.Lieu.ToLower().Contains(searchbar.Text.ToLower()) || searchbar.Text == searchbar_hint)
-                    DisplayList.Add(a);
+                if (a != null)
+                {
+                    if (a.Lieu.ToLower().Contains(searchbar.Text.ToLower()) || searchbar.Text == searchbar_hint)
+                        DisplayList.Add(a);
+                }
             }
         }
 
         #endregion
-
-        private void ChangeDisplayList(object sender, EventArgs e)
-        {
-            DisplayList.Clear();
-            foreach (Activity a in _liste_activite.ListeActivite)
-            {
-                if (a.Lieu.ToLower().Contains(searchbar.Text.ToLower()) || searchbar.Text == searchbar_hint)
-                {
-                    try
-                    {
-                        if ((DateTime.Compare(a.Debut, (DateTime)search_debut.SelectedDate) > 0 && DateTime.Compare(a.Fin, (DateTime)search_fin.SelectedDate) < 0))
-                            DisplayList.Add(a);
-                    }
-                    catch (InvalidOperationException)
-                    {
-                        DisplayList.Add(a);
-                    }
-                }
-            }
-        }
     }
 }

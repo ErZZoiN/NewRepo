@@ -21,9 +21,11 @@
                           Click="Menu_save_Click"/>
                 <Separator/>
                 <MenuItem Header="Import"
-                          Name="menu_import"/>
+                          Name="menu_import"
+                          Click="Menu_import_Click"/>
                 <MenuItem Header="Export"
-                          Name="menu_export"/>
+                          Name="menu_export"
+                          Click="Menu_export_Click"/>
                 <Separator/>
                 <MenuItem Header="Exit"
                           Name="menu_exit"

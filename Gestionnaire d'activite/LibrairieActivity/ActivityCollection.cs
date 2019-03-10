@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 using System.Xml.Serialization;
 using System.IO;
+using ServiceStack.Text;
 
 namespace LibrairieActivity
 {
@@ -25,7 +26,8 @@ namespace LibrairieActivity
             ListeIntitule.Clear();
             foreach (Activity a in ListeActivite)
             {
-                ListeIntitule.Add(a.Intitule);
+                if(a!=null)
+                    ListeIntitule.Add(a.Intitule);
             }
         }
 
@@ -37,21 +39,12 @@ namespace LibrairieActivity
         public ObservableCollection<String> ListeIntitule
         {
             get;set;
-            //get
-            //{
-            //    ObservableCollection<String> s = new ObservableCollection<string>();
-            //    foreach(Activity a in _liste)
-            //    {
-            //        s.Add(a.Intitule);
-            //    }
-            //    return s;
-            //}
         }
 
-        public void SaveListOfActivity(string path)
+        public void SaveInXMLFormat(string path)
         {
 
-            XmlSerializer xmlformat = new XmlSerializer(typeof(List<Activity>));
+            System.Xml.Serialization.XmlSerializer xmlformat = new System.Xml.Serialization.XmlSerializer(typeof(List<Activity>));
             using (Stream fStream = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.None))
             {
                 xmlformat.Serialize(fStream, ListeActivite.ToList());
@@ -60,11 +53,39 @@ namespace LibrairieActivity
 
         public void LoadFromXMLFormat(string filename)
         {
-            XmlSerializer xmlFormat = new XmlSerializer(typeof(List<Activity>));
+            System.Xml.Serialization.XmlSerializer xmlFormat = new System.Xml.Serialization.XmlSerializer(typeof(List<Activity>));
             ListeActivite.Clear();
             using (Stream fStream = File.OpenRead(filename))
             {
                 ((List<Activity>)xmlFormat.Deserialize(fStream)).ForEach(item => Add(item));
+            }
+        }
+
+        public void SaveInCSVFormat(string path)
+        {
+            using (Stream fStream = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.None))
+            {
+                StreamWriter tw = new StreamWriter(fStream);
+                for (int i = 0;i<2;i++)
+                {
+                    tw.WriteCsv(ListeActivite);
+                }
+            }
+        }
+
+        public void LoadFromCSVFormat(string filename)
+        {
+            string tmp;
+            ListeActivite.Clear();
+            using (Stream fStream = File.OpenRead(filename))
+            {
+                StreamReader sr = new StreamReader(fStream);
+                while(!sr.EndOfStream)
+                {
+                    //ListeActivite.Add(CsvSerializer.DeserializeFromReader<Activity>(sr));
+                    tmp = sr.ReadLine();
+                    ListeActivite.Add(CsvSerializer.DeserializeFromString<Activity>(tmp));
+                }
             }
         }
 
