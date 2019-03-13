@@ -55,7 +55,7 @@ namespace Activity_Manager
 
         private void Appliquer_Click(object sender, RoutedEventArgs e)
         {
-            try
+            /*try
             {
                 Brush brush_background = new SolidColorBrush(background_color.SelectedColor.Value);
                 _fenetre_principale.name_list.Background = brush_background;
@@ -69,8 +69,18 @@ namespace Activity_Manager
             }
             catch (InvalidOperationException) { }
 
-            _fenetre_principale.SaveLocation = option_dossier.Text;
+            _fenetre_principale.SaveLocation = option_dossier.Text;*/
+
+            Brush brush_background = new SolidColorBrush(background_color.SelectedColor.Value);
+            Brush brush_foreground = new SolidColorBrush(foreground_color.SelectedColor.Value);
+
+            Changement(brush_background, brush_foreground, option_dossier.Text);
+
         }
         #endregion
+
+        public delegate void OptionChanged(Brush back, Brush front, string save);
+
+        public event OptionChanged Changement;
     }
 }

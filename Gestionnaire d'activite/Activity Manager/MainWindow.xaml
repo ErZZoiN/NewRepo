@@ -77,7 +77,8 @@
                 <StackPanel Orientation="Horizontal">
                     <Label Content="Nombre d'occurrence"/>
                     <wpfTool:IntegerUpDown Name="modify_event_occurence"
-                                           Width="50"/>
+                                           Width="50"
+                                           AllowTextInput="False"/>
                 </StackPanel>
                 <Label Content="Periodicite"/>
                 <ComboBox Name="modify_event_periodicite">
@@ -89,12 +90,14 @@
                 <StackPanel Orientation="Horizontal">
                     <StackPanel>
                         <Label Content="Date de début"/>
-                        <wpfTool:DateTimePicker Name="modify_event_debut"/>
+                        <wpfTool:DateTimePicker Name="modify_event_debut"
+                                                ValueChanged="Modify_event_debut_ValueChanged"/>
                     </StackPanel>
                     <Separator Width="5"/>
                     <StackPanel>
                         <Label Content="Date de fin"/>
-                        <wpfTool:DateTimePicker Name="modify_event_fin"/>
+                        <wpfTool:DateTimePicker Name="modify_event_fin" 
+                                                ValueChanged="Modify_event_fin_ValueChanged"/>
                     </StackPanel>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">

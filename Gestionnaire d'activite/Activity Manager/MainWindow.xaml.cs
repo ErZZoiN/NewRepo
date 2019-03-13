@@ -91,6 +91,7 @@ namespace Activity_Manager
         private void Menu_option_Click(object sender, RoutedEventArgs e)
         {
             Option win2 = new Option(this);
+            win2.Changement += OptionChange;
             win2.Show();
         }
 
@@ -192,9 +193,6 @@ namespace Activity_Manager
                 modify_event_periodicite.Text = _current_activity.Periodicite1.ToString();
 
                 modify_event_periodicite.Text = Activity.PeriodiciteToString(_current_activity.Periodicite1);
-
-                modify_event_debut.Value = _current_activity.Debut;
-                modify_event_fin.Value = _current_activity.Fin;
 
                 modify_event_debut.Value = _current_activity.Debut;
                 modify_event_fin.Value = _current_activity.Fin;
@@ -304,6 +302,30 @@ namespace Activity_Manager
             }
         }
 
+        private void Modify_event_fin_ValueChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            if (modify_event_debut.Value!=null)
+            {
+                if (DateTime.Compare((DateTime)modify_event_fin.Value, (DateTime)modify_event_debut.Value) < 0)
+                {
+                    modify_event_fin.Value = (DateTime)e.OldValue;
+                    System.Windows.MessageBox.Show("La date de fin doit être ultérieure à la date de début");
+                }
+            }
+        }
+
+        private void Modify_event_debut_ValueChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            if (modify_event_fin.Value!=null)
+            {
+                if (DateTime.Compare((DateTime)modify_event_fin.Value, (DateTime)modify_event_debut.Value) < 0)
+                {
+                    modify_event_debut.Value = (DateTime)e.OldValue;
+                    System.Windows.MessageBox.Show("La date de fin doit être ultérieure à la date de début");
+                }
+            }
+        }
+
         #endregion
 
         #region SEARCHBAR
@@ -392,5 +414,22 @@ namespace Activity_Manager
         }
 
         #endregion
+
+        public void OptionChange(Brush back, Brush front, string save)
+        {
+            try
+            {
+                name_list.Foreground = front;
+            }
+            catch (InvalidOperationException) { }
+
+            try
+            {
+                name_list.Background = back;
+            }
+            catch (InvalidOperationException) { }
+
+            SaveLocation = save;
+        }
     }
 }
