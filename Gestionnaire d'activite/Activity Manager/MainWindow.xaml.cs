@@ -108,7 +108,11 @@ namespace Activity_Manager
             saveFileDialog.DefaultExt = ".xml";
             saveFileDialog.ShowDialog();
 
-            _liste_activite.SaveInXMLFormat(saveFileDialog.FileName);
+            try {
+                _liste_activite.SaveInXMLFormat(saveFileDialog.FileName);
+            }
+            catch (System.ArgumentException)
+            { }
         }
 
         private void Menu_open_Click(object sender, RoutedEventArgs e)
@@ -117,7 +121,13 @@ namespace Activity_Manager
             openFileDialog.InitialDirectory = SaveLocation;
             openFileDialog.DefaultExt = ".xml";
             openFileDialog.ShowDialog();
-            _liste_activite.LoadFromXMLFormat(openFileDialog.FileName);
+
+            try
+            {
+                _liste_activite.LoadFromXMLFormat(openFileDialog.FileName);
+            }
+            catch (System.ArgumentException)
+            {}
         }
 
         private void Menu_export_Click(object sender, RoutedEventArgs e)
@@ -127,9 +137,12 @@ namespace Activity_Manager
             saveFileDialog.AddExtension = true;
             saveFileDialog.DefaultExt = ".csv";
             saveFileDialog.ShowDialog();
-
-            _liste_activite.SaveInCSVFormat(saveFileDialog.FileName);
-        }
+            try {
+                _liste_activite.SaveInCSVFormat(saveFileDialog.FileName);
+            }
+            catch (System.ArgumentException)
+            {}
+}
 
         private void Menu_import_Click(object sender, RoutedEventArgs e)
         {
@@ -137,7 +150,12 @@ namespace Activity_Manager
             openFileDialog.InitialDirectory = SaveLocation;
             openFileDialog.DefaultExt = ".csv";
             openFileDialog.ShowDialog();
-            _liste_activite.LoadFromCSVFormat(openFileDialog.FileName);
+
+            try {
+                _liste_activite.LoadFromCSVFormat(openFileDialog.FileName);
+            }
+            catch (System.ArgumentException)
+            { }
         }
 
         #endregion
@@ -351,8 +369,15 @@ namespace Activity_Manager
                     }
                     else
                     {
+                        try {
                         if (DateTime.Compare(a.Fin, (DateTime)search_fin.SelectedDate) < 0)
                             DisplayList.Add(a);
+                        }
+                        catch (InvalidOperationException)
+                        {
+                            DisplayList.Add(a);
+                        }
+
                     }
 
                 }

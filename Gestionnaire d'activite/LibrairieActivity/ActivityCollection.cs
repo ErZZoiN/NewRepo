@@ -65,11 +65,7 @@ namespace LibrairieActivity
         {
             using (Stream fStream = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.None))
             {
-                StreamWriter tw = new StreamWriter(fStream);
-                for (int i = 0;i<2;i++)
-                {
-                    tw.WriteCsv(ListeActivite);
-                }
+                fStream.WriteCsv(ListeActivite);
             }
         }
 
@@ -80,9 +76,9 @@ namespace LibrairieActivity
             using (Stream fStream = File.OpenRead(filename))
             {
                 StreamReader sr = new StreamReader(fStream);
+                //sr.ReadLine();
                 while(!sr.EndOfStream)
                 {
-                    //ListeActivite.Add(CsvSerializer.DeserializeFromReader<Activity>(sr));
                     tmp = sr.ReadLine();
                     ListeActivite.Add(CsvSerializer.DeserializeFromString<Activity>(tmp));
                 }

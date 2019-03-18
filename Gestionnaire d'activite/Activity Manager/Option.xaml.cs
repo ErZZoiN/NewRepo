@@ -28,6 +28,8 @@ namespace Activity_Manager
             _fenetre_principale = mainWindow;
             InitializeComponent();
             option_dossier.Text = mainWindow.SaveLocation;
+            background_color.SelectedColor = (mainWindow.name_list.Background as SolidColorBrush).Color;
+            foreground_color.SelectedColor = (mainWindow.name_list.Foreground as SolidColorBrush).Color;
         }
 
         #region LISTENER
@@ -55,6 +57,7 @@ namespace Activity_Manager
 
         private void Appliquer_Click(object sender, RoutedEventArgs e)
         {
+
             /*try
             {
                 Brush brush_background = new SolidColorBrush(background_color.SelectedColor.Value);
@@ -71,8 +74,8 @@ namespace Activity_Manager
 
             _fenetre_principale.SaveLocation = option_dossier.Text;*/
 
-            Brush brush_background = new SolidColorBrush(background_color.SelectedColor.Value);
-            Brush brush_foreground = new SolidColorBrush(foreground_color.SelectedColor.Value);
+            var brush_background = new SolidColorBrush(background_color.SelectedColor.Value);
+            var brush_foreground = new SolidColorBrush(foreground_color.SelectedColor.Value);
 
             Changement(brush_background, brush_foreground, option_dossier.Text);
 
